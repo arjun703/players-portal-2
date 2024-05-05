@@ -49,7 +49,7 @@ export default function LandingPage(){
             <Header user={false} />
 
             <Container maxWidth="lg" >
-                <div class="form-wrapper-outer">
+                <div className="form-wrapper-outer">
                     <Box
                         component="form"
                     >

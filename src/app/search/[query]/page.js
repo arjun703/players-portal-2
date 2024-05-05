@@ -83,7 +83,7 @@ export default function SearchResults({params}) {
             ): (
               <>
                 <div>
-                  <h4 style={{textAlign:'center'}}>Search Results for "{query}"</h4>
+                  <h4 style={{textAlign:'center'}}>Search Results for <i>{query}</i></h4>
                 </div>
                 <Divider></Divider>
                 <div style={{padding:'30px'}}>

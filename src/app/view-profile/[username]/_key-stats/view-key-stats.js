@@ -123,7 +123,7 @@ function DisplayKeyStats({keystat,  editable}){
                             <Divider></Divider>
                             <Grid container sx={{marginTop: '20px'}}>
                             {
-                                sport.settings.map(setting => {
+                                sport.settings.map((setting, index) => {
                                     if( setting.value.toString().trim().length  > 0){
                                         let value = setting.value
                                         console.log(setting.type)
@@ -140,7 +140,7 @@ function DisplayKeyStats({keystat,  editable}){
                                                 break;
                                         }
                                         return(
-                                            <Grid  item xs={12} md={6}  >
+                                            <Grid key={index} item xs={12} md={6}  >
                                                 <div style={{padding:'10px', margin:'10px', border: '1px solid #ccc', borderRadius: '5px', padding: '10px', display:'flex', verticalAlign:'center'}}>
                                                     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                                         <div style={{ fontWeight: 'bold'}}>{setting.label}:</div>
