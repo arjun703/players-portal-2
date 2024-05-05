@@ -3,7 +3,7 @@ import { databaseConnection, getLoggedInUsername, generateToken, executeQuery} f
 
 const connection = mysql.createConnection({
     host: process.env.HOST,
-    user: process.env.USER,
+    user: process.env.DB_USER,
     password: process.env.PASS,
     database: process.env.DB,
 });
