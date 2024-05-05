@@ -9,10 +9,11 @@ const connection = mysql.createConnection({
 });
 
 export  async function GET(request) {
-
+    const { searchParams } = new URL(request.url)
+    const userName = searchParams.get('username')
+    
     try {
-        const { searchParams } = new URL(request.url)
-        const userName = searchParams.get('username')
+
 
         let  query = `SELECT * from press_or_interviews 
             WHERE user_id = '${userName}' AND is_active=1
