@@ -24,8 +24,8 @@ export  async function POST(request) {
 
         // Save the title and filenames in the MySQL database
         const query = `
-            INSERT INTO users(username, email, password, type) VALUES (
-                '${username}', '${email}', '${password}', 'custom'
+            INSERT INTO users(username, email, password, type, phone) VALUES (
+                '${username}', '${email}', '${password}', 'custom', ''
             )
         `;
 
