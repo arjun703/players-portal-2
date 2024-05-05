@@ -26,10 +26,12 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 }
+sudo certbot --nginx -d sportstalentasia.com -d www.sportstalentasia.com
 
 
 /var/www/html/players-portal-2/public/sql-to-import.sql
 
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
 
 mysql -u players_portal_2 -p database_name < /var/www/html/players-portal-2/public/sql-to-import.sql

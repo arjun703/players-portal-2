@@ -41,7 +41,7 @@ export default function Athletics({username}){
     const handleAddNewPressOrInterview = async (pressOrInterviewInfo) => {
         const formData = new FormData();
         formData.append('press_or_interview_info', JSON.stringify(pressOrInterviewInfo));
-        const result = await pOSTRequest(formData, 'api/athletics/press_or_interview/')
+        const result = await pOSTRequest(formData, '/api/athletics/press_or_interview/')
         if (result.success) {
             setTimeout(() => {
                 setPressOrInterviews(prevState => [
@@ -61,7 +61,7 @@ export default function Athletics({username}){
         
         const formData = new FormData();
         formData.append('press_or_interview', JSON.stringify(pressOrInterview));
-        const result = await uPDATErequest(formData, 'api/athletics/press_or_interview/')
+        const result = await uPDATErequest(formData, '/api/athletics/press_or_interview/')
         if (result.success) {
             setTimeout(() => {
                 setPressOrInterviews(prevState => {
@@ -83,7 +83,7 @@ export default function Athletics({username}){
     const handleDeletePressOrInterview = async (id) => {
         const formData = new FormData();
         formData.append('press_or_interview_id', id);
-        const response = await dELETErequest(formData, 'api/athletics/press_or_interview/')
+        const response = await dELETErequest(formData, '/api/athletics/press_or_interview/')
         if (response.success && response.press_or_interview_id === id) {
             setPressOrInterviews(prevState => prevState.filter(ps => ps.id !== id))
             return true;
@@ -96,7 +96,7 @@ export default function Athletics({username}){
     const handleAddNewAdditionalSport= async (additionalSPortInfo) => {
         const formData = new FormData();
         formData.append('additional_sport_info', JSON.stringify(additionalSPortInfo));
-        const result = await pOSTRequest(formData, 'api/athletics/additional_sport/')
+        const result = await pOSTRequest(formData, '/api/athletics/additional_sport/')
         if (result.success) {
             setTimeout(() => {
                 setAdditionalSports(prevState => [
@@ -116,7 +116,7 @@ export default function Athletics({username}){
         
         const formData = new FormData();
         formData.append('additional_sport', JSON.stringify(additionalSport));
-        const result = await uPDATErequest(formData, 'api/athletics/additional_sport/')
+        const result = await uPDATErequest(formData, '/api/athletics/additional_sport/')
         if (result.success) {
             setTimeout(() => {
                 setAdditionalSports(prevState => {
@@ -138,7 +138,7 @@ export default function Athletics({username}){
     const handleDeleteAdditionalSport= async (id) => {
         const formData = new FormData();
         formData.append('additional_sport_id', id);
-        const response = await dELETErequest(formData, 'api/athletics/additional_sport/')
+        const response = await dELETErequest(formData, '/api/athletics/additional_sport/')
         if (response.success && response.additional_sport_id === id) {
             setAdditionalSports(prevState => prevState.filter(ps => ps.id !== id))
             return true;
@@ -154,7 +154,7 @@ export default function Athletics({username}){
     const handleAddNewTraining= async (trainingInfo) => {
         const formData = new FormData();
         formData.append('training_info', JSON.stringify(trainingInfo));
-        const result = await pOSTRequest(formData, 'api/athletics/training/')
+        const result = await pOSTRequest(formData, '/api/athletics/training/')
         if (result.success) {
             setTimeout(() => {
                 setTrainings(prevState => [
@@ -174,7 +174,7 @@ export default function Athletics({username}){
         
         const formData = new FormData();
         formData.append('training', JSON.stringify(training));
-        const result = await uPDATErequest(formData, 'api/athletics/training/')
+        const result = await uPDATErequest(formData, '/api/athletics/training/')
         if (result.success) {
             setTimeout(() => {
                 setTrainings(prevState => {
@@ -196,7 +196,7 @@ export default function Athletics({username}){
     const handleDeleteTraining= async (id) => {
         const formData = new FormData();
         formData.append('training_id', id);
-        const response = await dELETErequest(formData, 'api/athletics/training/')
+        const response = await dELETErequest(formData, '/api/athletics/training/')
         if (response.success && response.training_id === id) {
             setTrainings(prevState => prevState.filter(ps => ps.id !== id))
             return true;
@@ -212,7 +212,7 @@ export default function Athletics({username}){
     const handleAddNewCoach= async (coachInfo) => {
         const formData = new FormData();
         formData.append('coach_info', JSON.stringify(coachInfo));
-        const result = await pOSTRequest(formData, 'api/athletics/coach/')
+        const result = await pOSTRequest(formData, '/api/athletics/coach/')
         if (result.success) {
             setTimeout(() => {
                 setCoaches(prevState => [
@@ -232,7 +232,7 @@ export default function Athletics({username}){
         
         const formData = new FormData();
         formData.append('coach', JSON.stringify(coach));
-        const result = await uPDATErequest(formData, 'api/athletics/coach/')
+        const result = await uPDATErequest(formData, '/api/athletics/coach/')
         if (result.success) {
             setTimeout(() => {
                 setCoaches(prevState => {
@@ -254,7 +254,7 @@ export default function Athletics({username}){
     const handleDeleteCoach= async (id) => {
         const formData = new FormData();
         formData.append('coach_id', id);
-        const response = await dELETErequest(formData, 'api/athletics/coach/')
+        const response = await dELETErequest(formData, '/api/athletics/coach/')
         if (response.success && response.coach_id === id) {
             setCoaches(prevState => prevState.filter(ps => ps.id !== id))
             return true;
@@ -268,7 +268,7 @@ export default function Athletics({username}){
     const handleAddNewTeam= async (teamInfo) => {
         const formData = new FormData();
         formData.append('team_info', JSON.stringify(teamInfo));
-        const result = await pOSTRequest(formData, 'api/athletics/team/')
+        const result = await pOSTRequest(formData, '/api/athletics/team/')
         if (result.success) {
             setTimeout(() => {
                 setTeams(prevState => [
@@ -288,7 +288,7 @@ export default function Athletics({username}){
         
         const formData = new FormData();
         formData.append('team', JSON.stringify(team));
-        const result = await uPDATErequest(formData, 'api/athletics/team/')
+        const result = await uPDATErequest(formData, '/api/athletics/team/')
         if (result.success) {
             setTimeout(() => {
                 setTeams(prevState => {
@@ -309,7 +309,7 @@ export default function Athletics({username}){
     const handleDeleteTeam= async (id) => {
         const formData = new FormData();
         formData.append('team_id', id);
-        const response = await dELETErequest(formData, 'api/athletics/team/')
+        const response = await dELETErequest(formData, '/api/athletics/team/')
         if (response.success && response.team_id === id) {
             setTeams(prevState => prevState.filter(ps => ps.id !== id))
             return true;
