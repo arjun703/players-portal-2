@@ -23,12 +23,12 @@ import mysql from 'mysql2';
 export async function databaseConnection(){
   const connection = mysql.createConnection({
     host: process.env.HOST,
-    user: process.env.USER,
+    user: process.env.DB_USER,
     password: process.env.PASS,
     database: process.env.DB,
   });
   console.log(process.env.HOST)
-  console.log(process.env.USER)
+  console.log(process.env.DB_USER)
   console.log(process.env.PASS)
   console.log(process.env.DB)
   return connection;
