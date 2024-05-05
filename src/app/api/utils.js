@@ -27,6 +27,10 @@ export async function databaseConnection(){
     password: process.env.PASS,
     database: process.env.DB,
   });
+  console.log(process.env.HOST)
+  console.log(process.env.USER)
+  console.log(process.env.PASS)
+  console.log(process.env.DB)
   return connection;
 }
 
