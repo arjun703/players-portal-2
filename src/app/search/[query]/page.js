@@ -63,7 +63,7 @@ export default function SearchResults({params}) {
 
     fetchSearchResults()
 
-  })
+  }, [])
 
   const router = useRouter()
   const handleClick = (un) => {router.push('/view-profile/'+encodeURIComponent(un))}
