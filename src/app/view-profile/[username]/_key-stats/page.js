@@ -5,7 +5,7 @@ import { pOSTRequest, getRequest, uPDATErequest, dELETErequest } from '@/app/_co
 
 
 
-export default function keyStats({username}){
+export default function KeyStats({username}){
 
     const [keyStat, setKeyStat] = useState({});
     const [isLoading, setIsLoading] = useState(true);

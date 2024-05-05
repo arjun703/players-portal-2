@@ -16,10 +16,10 @@ export default function basicInfo({basicInfo}){
             <h3 style={{ marginBottom: '10px', color: '#333' }}>Contact Info</h3>
             <Box>
                 {
-                    contactInfo.map(ci => {
+                    contactInfo.map((ci,index) => {
                         if(ci.value.toString().trim().length == 0) return''
                         return(
-                            <div style={{ marginBottom: '10px' }}>
+                            <div style={{ marginBottom: '10px' }} key={index}>
                                 <span className="general-info-label" 
                                     style={{ fontWeight: 'bold', marginRight: '10px' }}
                                 >

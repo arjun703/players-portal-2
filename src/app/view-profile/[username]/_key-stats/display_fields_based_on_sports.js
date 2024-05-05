@@ -21,7 +21,6 @@ export default function DisplayFieldsBasedOnSport({sportInfo, selectedSport, han
         }
     })
 
-    if(!sportSettings) return(<>Not found</>)
     
     const [info, setInfo] = useState(sportInfo)
     
@@ -34,6 +33,9 @@ export default function DisplayFieldsBasedOnSport({sportInfo, selectedSport, han
         await  handleSubmit(info)
         setIsLoading(false)
     }
+
+    if(!sportSettings) return(<>Not found</>)
+
 
     return(
         <>                        

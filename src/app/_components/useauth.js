@@ -4,6 +4,11 @@ import jwt from 'jsonwebtoken';
 
 
 function getCookie(name) {
+
+    if(typeof document === 'undefined'){
+        return false;
+    }
+
     if(!document){
         return false;
     }
