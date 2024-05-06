@@ -38,3 +38,6 @@ mysql -u players_portal_2 -p database_name < /var/www/html/players-portal-2/publ
 
 
 mysql -u players_portal_2 -p players_portal_2 < /var/www/html/players-portal-2/public/sql-to-import.sql
+
+
+sudo certbot --nginx -d  www.sportstalentasia.com

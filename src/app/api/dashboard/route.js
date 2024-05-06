@@ -1,5 +1,5 @@
 import mysql from 'mysql2';
-import { databaseConnection, getLoggedInUsername, generateToken, executeQuery} from '@/app/api/utils'
+import {  getLoggedInUsername, generateToken, executeQuery} from '@/app/api/utils'
 
 const connection = mysql.createConnection({
     host: process.env.HOST,
