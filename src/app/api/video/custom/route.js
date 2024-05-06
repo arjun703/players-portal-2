@@ -1,14 +1,7 @@
-import {generateRandomString, getLoggedInUsername} from '@/app/api/utils'
+import {generateRandomString,databaseConnection, getLoggedInUsername} from '@/app/api/utils'
 import fs from 'fs';
 import path from 'path';
-import mysql from 'mysql2';
 
-const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.DB_USER,
-    password: process.env.PASS,
-    database: process.env.DB,
-});
 
 export  async function POST(request) {
 
@@ -50,7 +43,8 @@ export  async function POST(request) {
             VALUES 
             ('${id}', '${title}', '${thumbnailFileName}', '${videoFileName}', 'custom', '${getLoggedInUsername()}')
         `;
-        
+        const connection = await databaseConnection();
+
         const thumbnail_src = thumbnailFileName
 
         connection.query(query, (error, results) => {

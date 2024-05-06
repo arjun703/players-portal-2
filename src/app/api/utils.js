@@ -27,11 +27,19 @@ export async function databaseConnection(){
     password: process.env.PASS,
     database: process.env.DB,
   });
-  console.log(process.env.HOST)
-  console.log(process.env.DB_USER)
-  console.log(process.env.PASS)
-  console.log(process.env.DB)
-  return connection;
+
+
+    // Wrap the creation of connection in a Promise
+  return new Promise((resolve, reject) => {
+      connection.connect(err => {
+          if (err) {
+              reject(err); // Connection failed
+          } else {
+              resolve(connection); // Connection successful
+          }
+      });
+  });
+
 }
 
 export function executeQuery(connection, q) {

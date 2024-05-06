@@ -65,6 +65,7 @@ export  async function GET(request) {
         `;
 
         const connection = await databaseConnection()
+        
 
         const keystat = await executeQuery(connection, query);
         connection.end()

@@ -1,12 +1,6 @@
 import mysql from 'mysql2';
 import { databaseConnection,getLoggedInUsername, generateToken, executeQuery} from '@/app/api/utils'
 
-const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.DB_USER,
-    password: process.env.PASS,
-    database: process.env.DB,
-});
 
 export  async function GET(request) {
     const { searchParams } = new URL(request.url)
@@ -19,6 +13,9 @@ export  async function GET(request) {
             WHERE user_id = '${userName}' AND is_active=1
             ORDER BY created_at DESC
         `;
+
+        const connection = await databaseConnection();
+
         const educations = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {
                 if (error) {

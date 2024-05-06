@@ -1,15 +1,7 @@
-import {generateRandomString, getLoggedInUsername, isValidUrl} from '@/app/api/utils'
+import {generateRandomString,databaseConnection, getLoggedInUsername, isValidUrl} from '@/app/api/utils'
 
 import fs from 'fs';
 import path from 'path';
-import mysql from 'mysql2';
-
-const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.DB_USER,
-    password: process.env.PASS,
-    database: process.env.DB,
-});
 
 export  async function POST(request) {
 
@@ -36,7 +28,8 @@ export  async function POST(request) {
             VALUES 
             ('${id}', '${title}', '', '${youtubeVideoURL}', 'youtube', '${getLoggedInUsername()}')
         `;
-        
+        const connection = await databaseConnection();
+
         connection.query(query, (error, results) => {
             if (error) {
                 throw new Error('Error inserting data into database- '+ error.message);

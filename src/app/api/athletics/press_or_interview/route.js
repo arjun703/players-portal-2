@@ -1,14 +1,6 @@
-import {generateRandomString, getLoggedInUsername} from '@/app/api/utils'
+import {generateRandomString,databaseConnection, getLoggedInUsername} from '@/app/api/utils'
 import fs from 'fs';
 import path from 'path';
-import mysql from 'mysql2';
-
-const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.DB_USER,
-    password: process.env.PASS,
-    database: process.env.DB,
-});
 
 export  async function POST(request) {
 
@@ -27,7 +19,8 @@ export  async function POST(request) {
             VALUES 
             ('${id}', '${getLoggedInUsername()}',  '${pressOrInterviewInfo}')
         `;
-        
+        const connection = await databaseConnection();
+
         connection.query(query, (error, results) => {
             if (error) {
                 throw new Error('Error inserting data into database- '+ error.message);
@@ -73,7 +66,8 @@ export  async function PUT(request) {
             WHERE id = '${id}'
             AND user_id='${getLoggedInUsername()}'
         `;
-        
+        const connection = await databaseConnection();
+
         connection.query(query, (error, results) => {
             if (error) {
                 throw new Error('Error inserting data into database- '+ error.message);
@@ -123,6 +117,7 @@ export async function DELETE(request) {
                 }
             });
         });
+        const connection = await databaseConnection();
 
         const successStatus  = result.affectedRows > 0
 

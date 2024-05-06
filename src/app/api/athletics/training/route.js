@@ -1,15 +1,8 @@
 import {generateRandomString} from '@/app/api/utils'
 import fs from 'fs';
 import path from 'path';
-import mysql from 'mysql2';
 import { databaseConnection, getLoggedInUsername, generateToken, executeQuery} from '@/app/api/utils'
 
-const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.DB_USER,
-    password: process.env.PASS,
-    database: process.env.DB,
-});
 
 export  async function POST(request) {
 
@@ -27,7 +20,8 @@ export  async function POST(request) {
             VALUES 
             ('${id}', '${getLoggedInUsername()}',  '${trainingInfo}')
         `;
-        
+        const connection = await databaseConnection();
+
         connection.query(query, (error, results) => {
             if (error) {
                 throw new Error('Error inserting data into database- '+ error.message);
@@ -73,7 +67,8 @@ export  async function PUT(request) {
             WHERE id = '${id}'
             AND user_id ='${getLoggedInUsername()}'
         `;
-        
+        const connection = await databaseConnection();
+
         connection.query(query, (error, results) => {
             if (error) {
                 throw new Error('Error inserting data into database- '+ error.message);
@@ -113,6 +108,7 @@ export async function DELETE(request) {
             SET is_active = 0 
             WHERE id = '${training_id}' AND user_id='${getLoggedInUsername()}'
         `;
+        const connection = await databaseConnection();
 
         const result = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {

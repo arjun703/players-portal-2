@@ -1,12 +1,5 @@
 import mysql from 'mysql2';
-import {  getLoggedInUsername, generateToken, executeQuery} from '@/app/api/utils'
-
-const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.DB_USER,
-    password: process.env.PASS,
-    database: process.env.DB,
-});
+import {  getLoggedInUsername,databaseConnection, generateToken, executeQuery} from '@/app/api/utils'
 
 export  async function GET(request) {
 
@@ -50,6 +43,7 @@ export  async function GET(request) {
         basic_info.username = '${getLoggedInUsername()}';
         
         `;
+        const connection = await databaseConnection();
 
         const user = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {
