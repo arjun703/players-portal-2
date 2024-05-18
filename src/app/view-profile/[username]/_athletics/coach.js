@@ -16,12 +16,25 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DialogBox from "../_video/dialog";
 import DialogContentText from '@mui/material/DialogContentText';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { styled } from '@mui/material/styles';
 
 const coachTypeOptions = [
     {label: 'Club Coach', id: 'club'},
     {label: 'Juniors Coach', id: 'junior'},
     {label: 'Private', id: 'private'}
 ]
+
+const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
 
 function AddNewOrEditCoachForm({defaultCoachInfo=false, handleCancel, handleSubmit}){
@@ -42,7 +55,9 @@ function AddNewOrEditCoachForm({defaultCoachInfo=false, handleCancel, handleSubm
             phone: '',
             email: '',
             team: '',
-            interested: ''
+            accredeted_coaching_license: '',
+            interested: '',
+            accredeted_coaching_license_file: ''
         };
     }
 
@@ -139,6 +154,44 @@ function AddNewOrEditCoachForm({defaultCoachInfo=false, handleCancel, handleSubm
                         </Select>
                     </FormControl>
                 </Grid>
+
+                <Grid item xs={12} sm={6}  >
+                    <FormControl fullWidth>
+                        <TextField 
+                            value={coachInfo.accredeted_coaching_license}   
+                            onChange={(e)=>handleChange(e.target.value, 'accredeted_coaching_license')}  
+                            label="Link to Accredited Coaching license" 
+                            variant="outlined" 
+                        />
+                    </FormControl>
+                </Grid>
+                {
+                    defaultCoachInfo === false && 
+                    <Grid item xs={12} sm={6}  >
+                        <FormControl fullWidth>
+                            <Button                       
+                                component="label"
+                                role={undefined}
+                                variant="outlined"
+                                tabIndex={-1}
+                            >
+                                {coachInfo.accredeted_coaching_license_file?.name || 'Upload Accredeted Coaching License'}
+                                <VisuallyHiddenInput 
+                                    onChange={(e)=>{
+                                        const file= e.target.files[0] || '';
+                                        if(file){     
+                                            handleChange(file, 'accredeted_coaching_license_file')
+                                        }else{
+                                            handleChange('', 'accredeted_coaching_license_file')
+                                        }
+                                    }} 
+                                    type="file" 
+                                />
+                            </Button>
+                        </FormControl>
+                    </Grid>
+                }
+ 
 
             </Grid>
             <div style={{display:'flex', marginTop: '20px',  justifyContent: 'center'}}>
@@ -273,12 +326,12 @@ function Coaches({isEditable, coaches, handleEdit, handleDelete}){
                             info = JSON.parse(info)
                         }
                         if(!info)return(<></>)
-                        let  {coach_name, coach_type, phone, email, team} = info
+                        let  {accredeted_coaching_license, coach_name, coach_type, phone, email, team} = info
                         coach_type = coachTypeOptions.filter(({id}) => id == coach_type)[0]['label']
 
                         return (
                             
-                            <Grid key={index}  item xs={12} sm={6} md={4} sx={{position: 'relative', '&:hover .tooltip': {display: 'block'} }} >
+                            <Grid key={index}  item xs={12} sm={6} sx={{position: 'relative', '&:hover .tooltip': {display: 'block'} }} >
                                 <div class="grid-inner" style={{position: 'relative'}}>
                                     <Paper sx={{ padding: 1 }} elevation={2}>
                                         <h4 style={{ margin: '10px 0'}}> {coach_name}</h4>
@@ -286,19 +339,26 @@ function Coaches({isEditable, coaches, handleEdit, handleDelete}){
                                         {
                                             phone.trim().length && (
                                                 <div>{phone}</div>
-                                            )
+                                            ) || ''
                                         }
                                         {
                                             email.trim().length && (
                                                 <div><i>{email}</i></div>
-                                            )
+                                            ) || ''
                                         }
                                         {
                                             team.trim().length && (
                                                 <div>
                                                     Team <i>{team}</i>
                                                 </div>
-                                            )
+                                            ) || ''
+                                        }
+                                        {
+                                            accredeted_coaching_license.trim().length && (
+                                                <div>
+                                                    Accredited Coaching license: <i>{accredeted_coaching_license}</i>
+                                                </div>
+                                            ) || ''
                                         }
                                     </Paper>
 

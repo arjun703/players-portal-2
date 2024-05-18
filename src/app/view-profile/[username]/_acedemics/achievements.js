@@ -18,18 +18,6 @@ import DialogBox from "../_video/dialog";
 import DialogContentText from '@mui/material/DialogContentText';
 
 
-const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-  });
-
 const fileTypes = [
     {label: 'Achievement and Recognition Certificate', value: 'achievement_and_recog'}, 
     {label: 'Transcript', value: 'transcript'}, 
@@ -41,125 +29,25 @@ const fileTypes = [
 ]
 
 
-function AddNewAcademicFileForm({academicFile=false, handleCancel, handleAddAcademicFile}){
-    
-    const [type, setType] = useState('')
-    const [description, setDescription] = useState('')
-    const [file, setFile] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
-    const validateAddNew = async  ()=>{
-        if(type.trim().length == 0  || !file){
-            alert("Please fill up all the fields")
-            return
-        }
-        setIsLoading(true)
-        const result = await handleAddAcademicFile(type, file, description)
-        if(!result){
-            setIsLoading(false)
-        }
-    }
-    const isMobile = window.innerWidth < 500
-
-    return(
-        <>
-            <Grid container sx={{alignItems: 'center'}}>
-                <Grid item auto onClick={handleCancel}>
-                    <Button  variant="plain"  startDecorator={<ArrowBackIosIcon />}>Cancel</Button>
-                </Grid>
-                <Grid item xs>
-                    <Divider sx={{margin: '0 20px'}}></Divider>
-                </Grid>
-                <Grid item sx={{ display: isMobile ? 'flex' : 'none' }} auto onClick={validateAddNew}>
-                    <Button disabled={isLoading} variant="solid" >
-                       Add
-                    </Button>
-                </Grid>
-            </Grid>
-            <Container maxWidth={'sm'}>
-                <Grid container sx={{marginTop: 1, maxWidth: 'xs'}}>
-                    <Grid item xs={12}  sx={{padding: '0 10px', marginTop: {xs: 2}}}>
-                        <FormControl fullWidth >
-                            <InputLabel id="demo-simple-select-label">Type</InputLabel>
-                            <Select
-                                id="demo-simple-select"
-                                labelId="demo-simple-select-label"
-                                label="Level"
-                                onChange={(e)=> {setType(e.target.value)}}
-                            >   
-                                {fileTypes.map(({label, value},i) => (<MenuItem key={i} value={value}>{label}</MenuItem>))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={12} sx={{padding: '0 10px', marginTop: {xs: 2}}}>
-                        <FormControl fullWidth>
-                            <TextField onChange={(e)=> {setDescription(e.target.value)}} label="Description" variant="outlined" />
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={12}  sx={{padding: '0 10px',marginTop: {xs: 2}}}>
-                        <FormControl fullWidth>
-                            <Button                       
-                                component="label"
-                                role={undefined}
-                                variant="outlined"
-                                tabIndex={-1}
-                                startDecorator={<TableChartIcon />}
-                            >
-                                {file?.name || 'Choose File'}
-                                <VisuallyHiddenInput 
-                                    onChange={(e)=>{
-                                        const file= e.target.files[0] || null;
-                                        if(file){                                    
-                                            setFile(file)
-                                            setIsLoading(false)
-                                        }else{
-                                            setIsLoading(false)
-                                            setFile(false)
-                                        }
-                                    }} 
-                                    type="file" 
-                                />
-                            </Button>
-                        </FormControl>
-                    </Grid>
-                </Grid>
-            </Container>
-
-            <div style={{display:'flex', marginTop: '20px', alignItems: 'center',  justifyContent: 'center'}}>
-                <Button onClick={validateAddNew}  loadingPosition="start" loading={isLoading} variant="solid"  startDecorator={<TableChartIcon />}>
-                    Add Academic File
-                </Button>
-            </div>
-        </>
-
-    );
-}
-
-function EditAcademicInfo({academicFile, handleCancel, handleEdit}){
-    console.log(academicFile.info)
-    const [academicFileInfo, setAcademicFileInfo] = useState(academicFile.info)
+function EditAchievements({achievementInfo = '', handleEdit, handleCancel}){
+    const [achievements, setAchievements] = useState(achievementInfo)
     const [isLoading, setIsLoading] = useState(false)
 
-    const handleChange = (value, prop) => {
-        setAcademicFileInfo((prevAcademicFileInfo)=>({
-            ...prevAcademicFileInfo,
-            [prop] : value
-        }))
+    const handleChange = (value) => {
+        setAchievements(value)
     }
 
     const validateEdit = async () => {
-        if(academicFileInfo.type.trim().length == 0 || academicFileInfo.file_src.trim().length == 0){
-            alert('Title can\'t be blank')
+        if(achievements.length === 0){
+            alert('achievement info required')
             return
         }
         setIsLoading(true)
-        const result = await handleEdit(academicFileInfo)
+        const result = await handleEdit(achievements)
         if(!result){
             setIsLoading(false)
         }
     }
-    const isMobile = window.innerWidth < 500
 
     return(
         <>
@@ -185,7 +73,7 @@ function EditAcademicInfo({academicFile, handleCancel, handleEdit}){
                                 id="demo-simple-select"
                                 labelId="demo-simple-select-label"
                                 label="Level"
-                                value={academicFileInfo.type}
+                                value={Achievements.type}
                                 onChange={(e)=> {handleChange(e.target.value, 'type')}}
                             >   
                                 {fileTypes.map(({label, value},i) => (<MenuItem key={i} value={value}>{label}</MenuItem>))}
@@ -198,7 +86,7 @@ function EditAcademicInfo({academicFile, handleCancel, handleEdit}){
                             <TextField 
                                 onChange={(e)=> {handleChange(e.target.value, 'description')}} 
                                 label="Description" 
-                                value={academicFileInfo.description}
+                                value={Achievements.description}
                                 variant="outlined" 
                             />
                         </FormControl>
@@ -208,7 +96,7 @@ function EditAcademicInfo({academicFile, handleCancel, handleEdit}){
 
             <div style={{display:'flex', marginTop: '20px', alignItems: 'center',  justifyContent: 'center'}}>
                 <Button variant="solid" loading={isLoading} loadingPosition="start" onClick={validateEdit} startDecorator={<TableChartIcon />}>
-                    Edit Academic Info
+                    Save Achievement Info
                 </Button>
             </div>
         </>
@@ -238,8 +126,8 @@ export default function AcademicFiles({isEditable, academicFiles, handleEditAcad
 
     const handleInitiateEditAcademicFile =(academicFile) => {setEditingAcademicInfo({isEditing: true, academicFile: academicFile})}
     
-    const handleEditAcademicFileInner = async (academicFileInfo) => {
-        const result = await handleEditAcademicFile({id: editingAcademicInfo.academicFile.id, info: academicFileInfo})
+    const handleEditAcademicFileInner = async (Achievements) => {
+        const result = await handleEditAcademicFile({id: editingAcademicInfo.academicFile.id, info: Achievements})
         if(result){
             closeEditAcademicFile()
             return true
@@ -250,7 +138,7 @@ export default function AcademicFiles({isEditable, academicFiles, handleEditAcad
     const closeEditAcademicFile = () => {setEditingAcademicInfo({isWaitingDeletion: false, academicFile: false})}
     
     const handleInitiateDeleteAcademicFile = (academicFile) => {setDeletingAcademicFile({isWaitingDeletion: true, academicFile: academicFile})}
-    const handleDeleteAcademicFileInner = async (academicFileInfo) => {
+    const handleDeleteAcademicFileInner = async (Achievements) => {
         const result = await handleDeleteAcademicFile( deletingAcademicFile.academicFile.id)
         if(result){
             closeDeleteAcademicFile()
@@ -265,13 +153,8 @@ export default function AcademicFiles({isEditable, academicFiles, handleEditAcad
         <>
             <Paper sx={{padding: {xs: 1, md: 2}}}>
                 {
-                    addingNewAcademicFile
-                        ? <AddNewAcademicFileForm 
-                            handleCancel={closeAddNewAcademicFile} 
-                            handleAddAcademicFile={handleAddAcademicFileInner} 
-                        />
-                        : editingAcademicInfo.isEditing
-                            ? <EditAcademicInfo
+                        editingAcademicInfo
+                            ? <EditAchievements
                                 academicFile={editingAcademicInfo.academicFile}
                                 handleCancel={closeEditAcademicFile}
                                 handleEdit={handleEditAcademicFileInner}
@@ -289,7 +172,6 @@ export default function AcademicFiles({isEditable, academicFiles, handleEditAcad
                                                         handleDelete={handleInitiateDeleteAcademicFile}
                                                     />
                                                 </>   
-
                                             
                                             :   <DisplayNoAcademicFile
                                                     isEditable = {isEditable} 

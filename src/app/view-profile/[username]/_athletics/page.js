@@ -212,6 +212,7 @@ export default function Athletics({username}){
     const handleAddNewCoach= async (coachInfo) => {
         const formData = new FormData();
         formData.append('coach_info', JSON.stringify(coachInfo));
+        formData.append('accredeted_coaching_license_file', coachInfo.accredeted_coaching_license_file);
         const result = await pOSTRequest(formData, '/api/athletics/coach/')
         if (result.success) {
             setTimeout(() => {
