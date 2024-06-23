@@ -7,6 +7,8 @@ export default function basicInfo({basicInfo}){
     const contactInfo = [
         {label: 'Primary Phone', value: basicInfo?.primary_phone || ''},
         {label: 'Primary Email', value: basicInfo?.primary_email || ''},
+        {label: 'Residing Country', value: basicInfo?.residing_country || ''},
+        {label: 'Postcode / ZipCode', value: basicInfo?.zip_code || ''},
         {label: 'Secondary Phone', value: basicInfo?.secondary_phone || ''},
         {label: 'Secondary Email', value: basicInfo?.secondary_email || ''},
     ]

@@ -1,3 +1,6 @@
+ssh root@143.198.82.100
+FawcdTgk789f
+
 server {
   listen 80;
   server_name sportstalentasia.com
@@ -40,4 +43,5 @@ mysql -u players_portal_2 -p database_name < /var/www/html/players-portal-2/publ
 mysql -u players_portal_2 -p players_portal_2 < /var/www/html/players-portal-2/public/sql-to-import.sql
 
 
-sudo certbot --nginx -d  www.sportstalentasia.com
+sudo certbot --nginx -d  www.sportstalentasia.
+com

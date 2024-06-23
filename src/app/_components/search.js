@@ -83,7 +83,7 @@ export default function Search({onBackClick, isAtLeastLg}) {
                     >
                         <InputBase
                             sx={{ ml: 1, p: '8px', flex: 1}}
-                            placeholder="Search"
+                            placeholder="Search athletes"
                             autoFocus={isAtLeastLg ? false : true}
                             inputProps={{ 'aria-label': 'search google maps' }}
                             onChange={(e) => setQuery(e.target.value)}

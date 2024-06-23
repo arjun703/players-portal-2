@@ -35,7 +35,11 @@ export default function LandingPage(){
         const result = await pOSTRequest(formData, 'api/auth/login/custom/')
         if (result.success === true) {
             localStorage.setItem('token', result.token);
-            router.push('/dashboard')
+            if(result.type == 'coach'){
+                router.push('/coach-dashboard')
+            }else{
+                router.push('/dashboard')
+            }
         } else {
             alert(result.msg)
             setIsLoading(false)

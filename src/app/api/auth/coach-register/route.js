@@ -10,22 +10,23 @@ export  async function POST(request) {
 
         const data = await request.formData()
 
-        const email = data.get('email')
+        const coach = JSON.parse(data.get('info'))
 
-        const name = data.get('name')
-        
-        if(name.trim().length === 0 || email.trim().length === 0 || data.get('password').trim().length === 0){
+        const name = coach.name
+        const email = coach.email
+        const sport_type = coach.sport_type
+        let password = await hashPassword(coach.password)
+
+        if(name.trim().length === 0 || email.trim().length === 0 || coach.password.trim().length === 0){
             throw new Error('Fill all fields')
         }
-
-        const password = await hashPassword(data.get('password'))
         
         const username = name.toLowerCase().replace(/ /g, '-') + '-'+generateRandomString(8);
 
         // Save the title and filenames in the MySQL database
         const query = `
             INSERT INTO users(username, email, password, type, phone) VALUES (
-                '${username}', '${email}', '${password}', 'athlete', ''
+                '${username}', '${email}', '${password}', 'coach', ''
             )
         `;
 
@@ -35,16 +36,21 @@ export  async function POST(request) {
 
         if(isCreationSuccess){
 
+            coach.password = ''
+
+            coach.confirm_password = ''
+            
             const basicInfoInsertQuery = `
-                INSERT INTO basic_info(username, name, info, gender, profile_photo_src, cover_photo_src) 
-                VALUES ('${username}', '${name}', '{}', '', '', '')
+                INSERT INTO only_coach(username, info, sport_type) 
+                VALUES ('${username}', '${JSON.stringify(coach)}', '${sport_type}' )
             `
 
             const isBasicInfoInsertionSuccess = await executeQuery(connection, basicInfoInsertQuery)
 
             if(isBasicInfoInsertionSuccess){
 
-                const token = generateToken(username)
+                const token = generateToken(username, 'coach')
+
                 cookies().set('token', token)
 
                 return new Response(JSON.stringify({ success: true, token: token }), {

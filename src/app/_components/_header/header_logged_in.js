@@ -27,7 +27,7 @@ import React from 'react';
 
 function Img(){
   return(
-    <a href="/dashboard" style={{paddingLeft: '20px'}}>
+    <a href="#" style={{paddingLeft: '20px'}}>
       <img style={{maxHeight: '60px'}} src="/site-assets/logo.png" />
     </a>
   )
@@ -65,7 +65,6 @@ export default function HeaderLoggedIn({username}){
                     <Search isAtLeastLg  onBackClick = {handleBackClick}  />
                   </Grid>
                 }
-                
                 <Grid item xs={8} md={3} lg={2} >
                   <HeaderRightIcons handleSearchIconClick={handleSearchIconClick} isAtLeastMd={isAtLeastMd} />
                 </Grid>
@@ -95,21 +94,73 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
+
+function getCookie(name) {
+
+  if(typeof document === 'undefined'){
+      return false;
+  }
+
+  if(!document){
+      return false;
+  }
+  const cookies = document.cookie.split(';');
+  for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.trim().split('=');
+      if (cookieName === name) {
+          return decodeURIComponent(cookieValue);
+      }
+  }
+  return null;
+}
+
+function getUserTypeFromToken(){
+
+  const myCookie = getCookie('token');
+  if(!myCookie) return false 
+
+  const parts = myCookie.split('.');
+  const header = JSON.parse(atob(parts[0]));
+  const payload = JSON.parse(atob(parts[1]));
+  if(payload && payload.userType !== undefined){
+    return  payload.userType
+  }else{
+    return false
+  }
+}
+
 function HeaderCenterMenuItemsForLoggedIn(){
   const pathname = usePathname()
   const router = useRouter()
   const username = getUserNameFromToken()
+  const userType =getUserTypeFromToken()
+  const decideDashboardPath = () => {
+    if(userType ==''){
+      pathname != '/dashboard' ? router.push('/dashboard') : '' 
+    }else if(userType == 'coach'){
+      pathname != '/coach-dashboard' ? router.push('/coach-dashboard') : '' 
+    }
+  }
+
+  const decideProfilePath = () => {
+    if(userType ==''){
+      pathname != '/view-profile/'+username ? router.push('/view-profile/'+username ) : '' 
+    }else if(userType == 'coach'){
+      pathname != '/coach-edit-profile' ? router.push('/coach-edit-profile') : '' 
+    }
+  }
+
   return(
     <>
       <ListItemButton style={{borderBottom: pathname === '/dashboard' ? '2px solid red' : ''}}
-        onClick={() => pathname != '/dashboard' ? router.push('/dashboard') : ''  }
+        onClick={decideDashboardPath}
       >
          <ListItemIcon sx={{display: {xs: 'flex', lg: 'none'}}}><DashboardIcon /></ListItemIcon>
           <ListItemText primary={'Dashboard'} />
       </ListItemButton>
       <ListItemButton
       style={{borderBottom: pathname === '/view-profile/'+username ? '2px solid red' : ''}} 
-        onClick={() => pathname != '/view-profile/'+username ? router.push('/view-profile/'+username ) : ''  }
+        onClick={decideProfilePath}
       >
           <ListItemIcon sx={{display: {xs: 'flex', lg: 'none'}}}><AccountBoxIcon /></ListItemIcon>
 
@@ -183,17 +234,13 @@ function HeaderRightIcons({isAtLeastMd, handleSearchIconClick}){
                     </Box>
                     <ListItemButton onClick={()=>{ handleClick()}}>
                     <ListItemIcon><LogoutIcon /></ListItemIcon>
-
                       <ListItemText primary={'Log Out'} />
                     </ListItemButton>
               </List>
             </div>
-
           </Popover>
-
         </Stack>
       </Box>
-
     </>
   );
 }

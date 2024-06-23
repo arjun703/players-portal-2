@@ -26,29 +26,157 @@ import { useSearchParams } from 'next/navigation'
 import MoreActions from './_components/more_menu_view_profile'
 import { Flag } from '@mui/icons-material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { setuid } from 'process';
+import Button from '@mui/joy/Button';
+
+
+
+
+function getCookie(name) {
+
+    if(typeof document === 'undefined'){
+        return false;
+    }
+  
+    if(!document){
+        return false;
+    }
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.trim().split('=');
+        if (cookieName === name) {
+            return decodeURIComponent(cookieValue);
+        }
+    }
+    return null;
+  }
+  
+  function getUserTypeFromToken(){
+  
+    const myCookie = getCookie('token');
+    if(!myCookie) return false 
+  
+    const parts = myCookie.split('.');
+    const header = JSON.parse(atob(parts[0]));
+    const payload = JSON.parse(atob(parts[1]));
+    if(payload && payload.userType !== undefined){
+      return  payload.userType
+    }else{
+      return false
+    }
+  }
+
+
+
 export default function ViewProfile({params}){
 
 
-    const [value, setValue] = useState('1');
+    const [value, setValue] = useState('2');
     const  isLargerDevice = useMediaQuery('(min-width:900px)');
     const [startX, setStartX] = useState(null);
     const [endX, setEndX] = useState(null);
+    const [trackingUser, setTrackingUser] = useState(false)
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };    
 
-    const totalTabs = 6;
+    const totalTabs = 5;
+
+    const userType = getUserTypeFromToken();
+
+    const [user, setUser] = useState(false)
+
+    useEffect(() => {
+        async function fetchUser() {
+            try {
+                const response = await fetch('/api/profile-photo?username='+params.username); // Adjust the API endpoint URL as needed
+                if (!response.ok) {
+                    throw new Error('Failed to fetch videos');
+                }
+                const data = await response.json();
+                setUser(data.basic_info)
+            } catch (error) {
+                alert( error.message)
+            }
+        }
+        fetchUser();
+
+        async function fetchTrackInfo(){
+            try{
+                const response = await  fetch('/api/track-player?username='+params.username+'&action=get'); 
+                if (!response.ok) {
+                    throw new Error('Failed to fetch tracking info');
+                }
+                const data =await response.json()
+                if(data.basic_info.length){
+                    setTrackingUser(true)
+                }
+            }catch(error){
+                alert(error.message)
+            }
+
+        }
+
+        fetchTrackInfo();
+
+    }, []); 
+
+    const handleTrack = async () => {
+        if(trackingUser){
+            fetch('/api/track-player?username='+params.username+'&action=remove'); 
+        }else{
+            fetch('/api/track-player?username='+params.username+'&action=add'); 
+        }
+        setTrackingUser(!trackingUser)
+
+    }
 
     return (
         <>
             <Header user={true}></Header>
 
+            {
+                user &&
+                <Container>
+
+                    <Grid container style={{marginTop:'30px', justifyContent: {xs:'center', md:'left'}, textAlign:'center', alignItems:'center'}}>
+                        <Grid xs={12} md="auto" style={{justifyContent:'center', display:'flex'}}>
+                            <Avatar
+                                alt="Remy Sharp"
+                                sx={{ width: {md:  250, xs: 250} , height:{md: 250, xs: 250}  }}
+                            >
+                                {user?.name.split(' ').map(w => w[0].toUpperCase() ) }
+                            </Avatar>
+                        </Grid>
+                        <Grid item xs={12} md="auto" sx={{marginLeft: {md: '20px'}}}>
+                            <h3 >{user?.name}</h3>
+                            {
+                                userType == 'coach' && 
+                                <div style={{display:'flex', justifyContent:'center'}}>
+                                    <Button onClick={handleTrack}>
+                                        {trackingUser ? 'Tracking' : 'Track Player'}
+                                    </Button>
+                                </div>
+                            }
+                        </Grid>
+                    </Grid>
+
+                </Container>
+
+
+
+                || ''
+
+            }
+
+
             <Box id="parentBox"
->
+                sx={{marginTop:'30px'}}
+            >
                 <TabContext id="parentTabContext" value={value}>  
                     <Box id="parentBox2" sx={{position:'sticky', padding: '10px 0 0 0', top: '0px', 
-                        borderBottom: 1, borderTop: 1, borderColor: 'divider', backgroundColor: 'white' }}>
+                        borderBottom: 1,  borderColor: 'divider'}}>
                         <Container 
                             id="parentContainer"
                             maxWidth={isLargerDevice && 'md'} 
@@ -62,7 +190,6 @@ export default function ViewProfile({params}){
                                         allowScrollButtonsMobile = {!isLargerDevice}
                                         onChange={handleChange}  aria-label="lab API tabs example" 
                                     >
-                                        <Tab label="Summary" value="1" />
                                         <Tab label="Video" value="2" />
                                         <Tab label="Athletics" value="3" />
                                         <Tab label="Key Stats" value="4" />
@@ -108,12 +235,6 @@ function TabPanels({username}){
 
     return(
         <>
-            <TabPanel value="1">
-                <Container maxWidth='md' sx={{paddingLeft: 0, paddingRight: 0}} >
-                   <h1>{username}</h1>
-                </Container>
-            </TabPanel>
-            
             <TabPanel sx={{padding: {xs: 0}}} value="2">
                 <Container maxWidth='md' sx={{paddingLeft: 0, paddingRight: 0}} >
                     <Videos username={username} />

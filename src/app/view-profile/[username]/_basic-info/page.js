@@ -131,7 +131,7 @@ export default function BasicInfo({username}){
                         <div style={{margin:'3px', marginBottom: '-10px'}}><h3 style={{marginTop:'0px'}}>General Info</h3></div>
 
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6} md={4}>
+                            <Grid item xs={12} sm={6} md={3}>
                                 <FormControl fullWidth>
                                     <TextField 
                                         id="outlined-basic" 
@@ -142,7 +142,7 @@ export default function BasicInfo({username}){
                                     />
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
+                            <Grid item xs={12} sm={6} md={3}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <FormControl fullWidth>
                                         <DatePicker
@@ -154,7 +154,7 @@ export default function BasicInfo({username}){
                                     </FormControl>
                                 </LocalizationProvider>
                             </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
+                            <Grid item xs={12} sm={6} md={3}>
                                 <FormControl fullWidth>
                                     <InputLabel id="add-new-coach-interested">Gender</InputLabel>
                                     <Select
@@ -167,12 +167,25 @@ export default function BasicInfo({username}){
                                     </Select>
                                 </FormControl>
                             </Grid>
+
+                            <Grid item xs={12} sm={6} md={3}>
+                                <FormControl fullWidth>
+                                    <TextField 
+                                        id="outlined-basic" 
+                                        label="Identification Number / Passport Number"
+                                        defaultValue={basicInfo?.identification_number || ''}
+                                        onChange={(e)=>handleChange(e.target.value, 'identification_number')}
+                                        variant="outlined" 
+                                    />
+                                </FormControl>
+                            </Grid>
+
                         </Grid>
 
                         <div style={{margin:'3px', marginBottom: '-10px'}}><h3>Contact Info</h3></div>
 
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6} md={4} lg={3}>
+                            <Grid item xs={12} sm={6} md={4}>
                                 <FormControl fullWidth>
                                     <TextField 
                                         id="outlined-basic" 
@@ -185,7 +198,7 @@ export default function BasicInfo({username}){
 
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} sm={6} md={4} lg={3}>
+                            <Grid item xs={12} sm={6} md={4}>
                                 <FormControl fullWidth>
                                     <TextField 
                                         id="outlined-basic" 
@@ -196,19 +209,48 @@ export default function BasicInfo({username}){
                                     />
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} sm={6} md={4} lg={3}>
+
+
+                            <Grid item xs={12} sm={6} md={4} >
+                                <FormControl fullWidth>
+                                    <TextField 
+                                        id="outlined-basic" 
+                                        label="Residing Country"
+                                        defaultValue={basicInfo?.residing_country || ''} 
+                                        onChange={(e)=>handleChange(e.target.value, 'residing_country')}
+                                        variant="outlined" 
+                                    />
+
+                                </FormControl>
+                            </Grid>
+
+                            <Grid item xs={12} sm={6} md={4} >
+                                <FormControl fullWidth>
+                                    <TextField 
+                                        id="outlined-basic" 
+                                        label="Postcode / ZipCode"
+                                        defaultValue={basicInfo?.zip_code || ''} 
+                                        onChange={(e)=>handleChange(e.target.value, 'zip_code')}
+                                        variant="outlined" 
+                                    />
+
+                                </FormControl>
+                            </Grid>
+
+
+                            <Grid item xs={12} sm={6} md={4} >
                                 <FormControl fullWidth>
                                     <TextField 
                                         id="outlined-basic" 
                                         label="Secondary  Phone"
                                         type='number'
-                                        defaultValue={basicInfo?.secondaryPhone || ''} 
+                                        defaultValue={basicInfo?.secondary_phone || ''} 
                                         onChange={(e)=>handleChange(e.target.value, 'secondary_phone')}
                                         variant="outlined" 
                                     />
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} sm={6} md={4} lg={3}>
+                            <Grid item xs={12} sm={6} md={4} >
                                 <FormControl fullWidth>
                                     <TextField 
                                         id="outlined-basic" 
@@ -305,6 +347,7 @@ export default function BasicInfo({username}){
                                     />
                                 </FormControl>
                             </Grid>                            
+                            
                             <Grid item xs={12} sm={6} md={4} lg={3}>
                                 <FormControl fullWidth>
                                     <TextField 
@@ -317,6 +360,7 @@ export default function BasicInfo({username}){
                                     />
                                 </FormControl>
                             </Grid>
+
                             <Grid item xs={12} sm={6} md={4} lg={3}>
                                 <FormControl fullWidth>
                                     <TextField 
@@ -328,30 +372,20 @@ export default function BasicInfo({username}){
                                     />
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} sm={6} md={4} lg={3}>
-                                <FormControl fullWidth>
-                                    <TextField 
-                                        id="outlined-basic" 
-                                        type='number'
-                                        label="Guardian Secondary  Phone"
-                                        defaultValue={basicInfo?.guardian_secondary_phone || ''} 
-                                        onChange={(e)=>handleChange(e.target.value, 'guardian_secondary_phone')}
-                                        variant="outlined" 
-                                    />
-                                </FormControl>
-                            </Grid>
 
                             <Grid item xs={12} sm={6} md={4} lg={3}>
                                 <FormControl fullWidth>
                                     <TextField 
                                         id="outlined-basic" 
-                                        label="Guardian Secondary  Email"
-                                        defaultValue={basicInfo?.guardian_secondary_email || ''} 
-                                        onChange={(e)=>handleChange(e.target.value, 'guardian_secondary_email')}
+                                        label="Guardian Identification / Passport Number"
+                                        defaultValue={basicInfo?.guardian_identification_number} 
+                                        onChange={(e)=>handleChange(e.target.value, 'guardian_identification_number')}
                                         variant="outlined" 
                                     />
                                 </FormControl>
                             </Grid>
+
+
 
                             <Grid item xs={12} sm={6} md={4} lg={3}>
                                 <FormControl fullWidth>

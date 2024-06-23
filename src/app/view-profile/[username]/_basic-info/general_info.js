@@ -22,9 +22,13 @@ export default function basicInfo({basicInfo}){
                     <span className="general-info-label" style={{ fontWeight: 'bold', marginRight: '10px' }}>Date of Birth:</span>
                     <span className="general-info-value">{basicInfo?.date_of_birth}</span>
                 </div>
-                <div>
+                <div style={{ marginBottom: '10px' }}>
                     <span className="general-info-label" style={{ fontWeight: 'bold', marginRight: '10px' }}>Gender:</span>
                     <span className="general-info-value">{genders[basicInfo?.gender]}</span>
+                </div>
+                <div>
+                    <span className="general-info-label" style={{ fontWeight: 'bold', marginRight: '10px' }}>Identification Number / Passport Number:</span>
+                    <span className="general-info-value">{basicInfo?.identification_number}</span>
                 </div>
             </Box>
         </Paper>

@@ -19,13 +19,12 @@ export  async function POST(request) {
         
         // console.log("results", results, query)
 
-
         if(results.length){
             const user = results[0]
             if(comparePassword(password, user.password)){
-                const token =generateToken(user.username)
+                const token = generateToken(user.username, user.type)
                 cookies().set('token', token)
-                return new Response(JSON.stringify({ success: true,  token: token }), {
+                return new Response(JSON.stringify({ success: true, type: user.type, token: token }), {
                     headers: {
                         "Content-Type": "application/json"
                     },

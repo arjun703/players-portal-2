@@ -31,7 +31,7 @@ function getUserNameFromToken() {
     const header = JSON.parse(atob(parts[0]));
     const payload = JSON.parse(atob(parts[1]));
     if(payload && payload.email !== undefined){
-      return payload.email
+      return  payload.email
     }else{
       return false
     }

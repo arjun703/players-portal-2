@@ -63,9 +63,9 @@ export async function comparePassword(plainPassword, hash){
   return  await bcrypt.compare(plainPassword, hash);
 }
 
-export function generateToken(email) {
+export function generateToken(email, userType='') {
   const secretKey = 'your_secret_key'; // Replace this with your own secret key
-  const payload = { email };
+  const payload = { email, userType };
 
   return jwt.sign(payload, secretKey);
 }

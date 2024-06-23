@@ -3,13 +3,13 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 export default function GuardianInfo({basicInfo}){
-
+    
     const guardianInfo = [
         {label: 'Relation', value: basicInfo?.guardian_relation || ''},
         {label: 'Guardian Name', value: basicInfo?.guardian_name || ''},
         {label: 'Primary Phone', value: basicInfo?.guardian_primary_phone || ''},
-        {label: 'Secondary Phone', value: basicInfo?.guardian_secondary_phone || ''},
-        {label: 'Secondary Email', value: basicInfo?.guardian_secondary_email || ''},
+        {label: 'Primary Email', value: basicInfo?.guardian_primary_email || ''},
+        {label: 'Guardian  Identification / Passport Number', value: basicInfo?.guardian_identification_number || ''},
         {label: 'Guardian Education', value: basicInfo?.guardian_highest_education_level || ''}
     ]
 
