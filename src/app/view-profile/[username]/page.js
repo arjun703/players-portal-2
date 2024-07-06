@@ -28,6 +28,7 @@ import { Flag } from '@mui/icons-material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { setuid } from 'process';
 import Button from '@mui/joy/Button';
+import basicInfo from './_basic-info/general_info';
 
 
 
@@ -76,6 +77,7 @@ export default function ViewProfile({params}){
     const [startX, setStartX] = useState(null);
     const [endX, setEndX] = useState(null);
     const [trackingUser, setTrackingUser] = useState(false)
+    const [userInAClub, setUserInAClub] = useState(false)
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -115,14 +117,38 @@ export default function ViewProfile({params}){
             }catch(error){
                 alert(error.message)
             }
-
         }
 
-        fetchTrackInfo();
+        if(userType == 'coach')
+            fetchTrackInfo();
+
+
+
+        async function fetchUserClubInfo(){
+            try{
+                const response = await  fetch('/api/add-to-club?username='+params.username+'&action=get'); 
+                if (!response.ok) {
+                    throw new Error('Failed to fetch tracking info');
+                }
+                const data =await response.json()
+                if(data.basic_info.length){
+                    setUserInAClub(true)
+                }
+            }catch(error){
+                alert(error.message)
+            }
+        }
+
+        if(userType == 'club')
+            fetchUserClubInfo();
+
+
 
     }, []); 
 
-    const handleTrack = async () => {
+    
+
+    const handleTrack  = async () => {
         if(trackingUser){
             fetch('/api/track-player?username='+params.username+'&action=remove'); 
         }else{
@@ -132,99 +158,123 @@ export default function ViewProfile({params}){
 
     }
 
+    const  handleUserClub  = async () => {
+        if(userInAClub){
+            fetch('/api/add-to-club?username='+params.username+'&action=remove'); 
+        }else{
+            fetch('/api/add-to-club?username='+params.username+'&action=add'); 
+        }
+        setUserInAClub(!userInAClub)
+    }
+
+
+
+
     return (
         <>
             <Header user={true}></Header>
-
-            {
-                user &&
-                <Container>
-
-                    <Grid container style={{marginTop:'30px', justifyContent: {xs:'center', md:'left'}, textAlign:'center', alignItems:'center'}}>
-                        <Grid xs={12} md="auto" style={{justifyContent:'center', display:'flex'}}>
-                            <Avatar
-                                alt="Remy Sharp"
-                                sx={{ width: {md:  250, xs: 250} , height:{md: 250, xs: 250}  }}
-                            >
-                                {user?.name.split(' ').map(w => w[0].toUpperCase() ) }
-                            </Avatar>
-                        </Grid>
-                        <Grid item xs={12} md="auto" sx={{marginLeft: {md: '20px'}}}>
-                            <h3 >{user?.name}</h3>
-                            {
-                                userType == 'coach' && 
-                                <div style={{display:'flex', justifyContent:'center'}}>
-                                    <Button onClick={handleTrack}>
-                                        {trackingUser ? 'Tracking' : 'Track Player'}
-                                    </Button>
-                                </div>
-                            }
-                        </Grid>
-                    </Grid>
-
-                </Container>
-
-
-
-                || ''
-
-            }
-
-
-            <Box id="parentBox"
-                sx={{marginTop:'30px'}}
-            >
-                <TabContext id="parentTabContext" value={value}>  
-                    <Box id="parentBox2" sx={{position:'sticky', padding: '10px 0 0 0', top: '0px', 
-                        borderBottom: 1,  borderColor: 'divider'}}>
-                        <Container 
-                            id="parentContainer"
-                            maxWidth={isLargerDevice && 'md'} 
-                            sx={{paddingLeft: !isLargerDevice && '0px!important'}}
-                        >
-                            <Grid id="tabs-holder" alignItems={'center'} container>
-                                <Grid item xs={11}>    
-                                    <TabList 
-                                        variant={!isLargerDevice && 'scrollable'}
-                                        scrollButtons="auto"
-                                        allowScrollButtonsMobile = {!isLargerDevice}
-                                        onChange={handleChange}  aria-label="lab API tabs example" 
+            <Grid container>
+                <Grid item xs md={3}>
+                    {
+                        user &&
+                        <Container >
+                            <div style={{marginTop:'30px', justifyContent: 'center', textAlign:'center', alignItems:'center'}}>
+                                <div  md="auto" style={{justifyContent:'center', display:'flex'}}>
+                                    <Avatar
+                                        alt="Remy Sharp"
+                                        src={user.profile_pic != null ? '/files/' + user.profile_pic: '' }
+                                        sx={{ width: {md:  250, xs: 250} , height:{md: 250, xs: 250}  }}
                                     >
-                                        <Tab label="Video" value="2" />
-                                        <Tab label="Athletics" value="3" />
-                                        <Tab label="Key Stats" value="4" />
-                                        <Tab label="Academics" value="5" />
-                                        <Tab label="Basic Info" value="6" />   
-                                    </TabList>
-                                </Grid>
-                                <Grid textAlign={isLargerDevice ? 'right' : 'center'} item xs={1}>
-                                    <MoreActions 
-                                        menuitems={
-                                            [
-                                                {
-                                                    label:'Copy Link to Profile' , 
-                                                    icon: <ContentCopyIcon variant='small' />,
-                                                    handler: ()=>{alert('copied')}
-                                                },
-
-                                                {
-                                                    label:'Report Profile' , 
-                                                    icon: <Flag variant='small' />,
-                                                    handler: ()=>{alert('Reported!')}
-                                                },
-
-                                            ]
-                                        } 
-                                    />
-                                </Grid>
-                            </Grid>
+                                        {user?.name.split(' ').map(w => w[0].toUpperCase() ) }
+                                    </Avatar>
+                                </div>
+                                <div  xs={12} md="auto" sx={{marginLeft: {md: '20px'}, textAlign:'center' }}>
+                                    <h3 >{user?.name}</h3>
+                                    {
+                                        userType == 'coach' && (
+                                        <div style={{display:'flex', justifyContent:'center'}}>
+                                            <Button onClick={handleTrack}>
+                                                {trackingUser ? 'Tracking' : 'Track Player'}
+                                            </Button>
+                                        </div>
+                                        )
+                                    }
+                                    {
+                                        userType == 'club' && (
+                                            <div style={{display:'flex', justifyContent:'center'}}>
+                                                <Button onClick={handleUserClub}>
+                                                    {userInAClub ? 'Remove from Club' : 'Add to Club'}
+                                                </Button>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            </div>
                         </Container>
+
+                        || ''
+                    }
+                </Grid>
+                <Grid item xs md={8}>
+                    <Box id="parentBox"
+                        sx={{marginTop:'30px'}}
+                    >
+                        <TabContext id="parentTabContext" value={value}>  
+                            <Box id="parentBox2" sx={{position:'sticky', padding: '10px 0 0 0', top: '0px', 
+                                borderBottom: 1,  borderColor: 'divider'}}>
+                                <Container 
+                                    id="parentContainer"
+                                    maxWidth={isLargerDevice && 'md'} 
+                                    sx={{paddingLeft: !isLargerDevice && '0px!important'}}
+                                >
+                                    <Grid id="tabs-holder" alignItems={'center'} container>
+                                        <Grid item xs={11}>    
+                                            <TabList 
+                                                variant={!isLargerDevice && 'scrollable'}
+                                                scrollButtons="auto"
+                                                allowScrollButtonsMobile = {!isLargerDevice}
+                                                onChange={handleChange}  aria-label="lab API tabs example" 
+                                            >
+                                                <Tab label="Video" value="2" />
+                                                <Tab label="Athletics" value="3" />
+                                                <Tab label="Key Stats" value="4" />
+                                                <Tab label="Academics" value="5" />
+                                                <Tab label="Basic Info" value="6" />   
+                                            </TabList>
+                                        </Grid>
+                                        <Grid textAlign={isLargerDevice ? 'right' : 'center'} item xs={1}>
+                                            <MoreActions 
+                                                menuitems={
+                                                    [
+                                                        {
+                                                            label:'Copy Link to Profile' , 
+                                                            icon: <ContentCopyIcon variant='small' />,
+                                                            handler: ()=>{alert('copied')}
+                                                        },
+
+                                                        {
+                                                            label:'Report Profile' , 
+                                                            icon: <Flag variant='small' />,
+                                                            handler: ()=>{alert('Reported!')}
+                                                        },
+
+                                                    ]
+                                                } 
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </Container>
+                            </Box>
+                            <div>
+                                <TabPanels username={params.username} />
+                            </div>
+                        </TabContext>   
                     </Box>
-                    <div>
-                        <TabPanels username={params.username} />
-                    </div>
-                </TabContext>   
-            </Box>
+                </Grid>
+            </Grid>
+
+
+
         </>
     );
 

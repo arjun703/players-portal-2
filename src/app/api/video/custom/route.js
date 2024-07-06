@@ -5,6 +5,8 @@ import path from 'path';
 
 export  async function POST(request) {
 
+    let connection = false
+
     try {
 
         const data = await request.formData()
@@ -13,12 +15,11 @@ export  async function POST(request) {
 
         const video = data.get('video')
         const thumbNail = data.get('thumbnail')
-
+        
         const id=generateRandomString(20)
         const thumbnailFileName = generateRandomString(20) + path.extname(thumbNail.name);
         const videoFileName = generateRandomString(20) + path.extname(video.name);
-       
-
+        
         if( !(['.jpg', '.jpeg', '.png', '.gif', '.bmp'].includes(path.extname(thumbNail.name.toLowerCase())))){
             throw new Error('Error - Invalid image format. Supported types are jpg, png, gif, bmp')
         }
@@ -43,7 +44,7 @@ export  async function POST(request) {
             VALUES 
             ('${id}', '${title}', '${thumbnailFileName}', '${videoFileName}', 'custom', '${getLoggedInUsername()}')
         `;
-        const connection = await databaseConnection();
+        connection = await databaseConnection();
 
         const thumbnail_src = thumbnailFileName
 
@@ -70,5 +71,9 @@ export  async function POST(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }

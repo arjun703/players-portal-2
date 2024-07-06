@@ -27,6 +27,7 @@ import { setLazyProp } from 'next/dist/server/api-utils';
 import { setgid } from 'process';
 
 import ProfilePictureModal from '@/app/_components/_profile_photo_upload'
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -86,19 +87,29 @@ export default function Dashboard() {
               <>
                 {
                   modalOpen && (
-                    <ProfilePictureModal onClose={handleProfilePicUploadModalClose} existingProfileImage={null} />
+                    <ProfilePictureModal onClose={handleProfilePicUploadModalClose} existingProfileImageLink={
+                      dashboardInfo.coach.profile_pic!= null? '/files/'+dashboardInfo.coach.profile_pic:false
+                    } />
                   )
                 }
                 <div className="avatar-name justify-content-between d-flex align-items-center" >
-                  <div style={{display:'flex', justifyContent:'center'}}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      onClick={handleProfilePicUploadModalClose}
-                      sx={{ width: {md:  80, xs: 80} , height:{md: 80, xs: 80}  }}
-                    >
-                      {coach?.name.split(' ').map(w => w[0].toUpperCase() ) }
-                    </Avatar>
+
+
+                <div onClick={handleProfilePicUploadModalClose} style={{ display:'flex', justifyContent:'center'}}>
+                    
+                    <div style={{cursor: 'pointer', position:'relative'}}>
+                      <Avatar
+                        alt={dashboardInfo.coach.name}
+                        src={'/files/'+dashboardInfo.coach.profile_pic}
+                        
+                        sx={{ width: {md:  80, xs: 80} , height:{md: 80, xs: 80}  }}
+                      >
+                      </Avatar>
+                      <PhotoCameraIcon sx={{position: 'absolute', fontSize: '15px', color:'white', background:'black', padding: '5px', borderRadius: '50%', bottom: '10px', right: '-5px' }} />
+                    </div>
+
                   </div>
+
                   <div style={{textAlign:'center', marginTop: '-15px'}}>
                     <h1>Welcome, {coach?.name.split(' ')[0]}</h1>
                   </div>
@@ -151,8 +162,9 @@ function TrackedPlayers({trackedPlayers}){
             <Card style={{cursor:'pointer'}} onClick={()=>{ handleClick(tp.athlete_username)}}>
               <CardHeader
                 avatar={
-                  <Avatar aria-label="recipe">
-                    
+                  <Avatar aria-label="recipe"
+                    src={ tp.profile_pic!= null ? '/files/'+ tp.profile_pic : ''}
+                  >
                   </Avatar>
                 }
                 title={tp.name }

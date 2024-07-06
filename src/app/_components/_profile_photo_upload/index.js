@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Box, Avatar, Divider  } from '@mui/material';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import Button from '@mui/joy/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import {pOSTRequest, dELETErequest} from '@/app/_components/file_upload';
 
-const ProfilePictureModal = ({ existingProfileImage, onClose }) => {
+
+const ProfilePictureModal = ({ existingProfileImageLink, onClose }) => {
   const [newProfileImage, setNewProfileImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(existingProfileImage);
-  const [showButtons, setShowButtons] = useState(false); // State to manage showing buttons
+  const [previewImage, setPreviewImage] = useState(false);
+  const [ showButtons, setShowButtons] = useState(false); // State to manage showing buttons
+  const [media, setMedia]  = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
+
+console.log(existingProfileImageLink)
+
+
+
+
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setMedia(file)
+      
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result);
@@ -23,26 +35,40 @@ const ProfilePictureModal = ({ existingProfileImage, onClose }) => {
     }
   };
 
-  const handleConfirm = () => {
-    // Logic to handle confirmation of the new profile image (newProfileImage)
-    onClose();
-  };
 
-  const handleCancel = () => {
-    setPreviewImage(existingProfileImage);
-    setNewProfileImage(null);
-    setShowButtons(false); // Hide buttons on cancel
-  };
+
+  const handleFileUpload = async () => {
+    if(!(!media && caption.trim().length == 0)){
+      try{
+        setIsUploading(true)
+        const formData = new FormData();
+        formData.append('profile_photo', media);
+        const result = await pOSTRequest(formData, '/api/profile-photo/')
+
+        if(result.success){
+          location.reload()
+          // return result.profile_photo;
+          
+        }else{
+          throw new Error(result.msg);
+        }
+      }catch(error){
+        console.error(error)
+      }finally{
+        setIsUploading(false)
+      }
+    }
+  }
+console.log(existingProfileImageLink)
+
 
   return (
     <Modal
       open={true} // You need to manage the open state in your parent component
-      onClose={onClose}
+      onClose={()=>{}}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-
-
       <Box
         sx={{
           position: 'absolute',
@@ -59,18 +85,25 @@ const ProfilePictureModal = ({ existingProfileImage, onClose }) => {
         }}
       >
 
-        <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{ position: 'absolute', fontWeight:'bold', top: 10, right: 10, color: 'grey' }}
-        >
-            <CloseIcon />
-        </IconButton>
+        {
+          !isUploading ?
+              <IconButton
+              aria-label="close"
+              onClick={onClose}
+              sx={{ position: 'absolute', fontWeight:'bold', top: 10, right: 10, color: 'grey' }}
+          >
+              <CloseIcon />
+          </IconButton>
+          : ''  
+      }
+
+
 
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-          <Avatar sx={{ width: 200, height: 200 }} src={previewImage} alt="Profile Picture" />
+          <Avatar sx={{ width: 200, height: 200 }} src={previewImage || existingProfileImageLink} alt="Profile Picture" />
         </Box>
         <Divider></Divider>
+
         {!showButtons && (
           <Button
             variant="outlined"
@@ -92,6 +125,7 @@ const ProfilePictureModal = ({ existingProfileImage, onClose }) => {
             <Button
               variant="outlined"
               component="label"
+              sx={{display: isUploading ? 'none': ''}}
               startDecorator={<PhotoCameraIcon />}
               onClick={handleFileChange}
             >
@@ -103,7 +137,7 @@ const ProfilePictureModal = ({ existingProfileImage, onClose }) => {
                 onChange={handleFileChange}
               />
             </Button>
-            <Button onClick={handleConfirm} variant="solid" >
+            <Button sx={{width: isUploading ? '100%': 'auto'}} onClick={handleFileUpload} variant="solid" loading={isUploading} >
               Confirm
             </Button>
           </Box>

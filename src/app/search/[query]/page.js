@@ -93,7 +93,9 @@ export default function SearchResults({params}) {
                         <Card style={{cursor:'pointer'}} onClick={()=>{ handleClick(sr.username)}}>
                           <CardHeader
                             avatar={
-                              <Avatar aria-label="recipe">
+                              <Avatar aria-label="recipe"
+                                src={ sr.profile_pic!= null ? '/files/'+ sr.profile_pic : ''}
+                              >
                                 
                               </Avatar>
                             }

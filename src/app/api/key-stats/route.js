@@ -1,7 +1,7 @@
 import { databaseConnection,getLoggedInUsername, generateToken, executeQuery} from '@/app/api/utils'
 
 export  async function PUT(request) {
-
+    let connection = false
     try {
 
         const data = await request.formData()
@@ -26,7 +26,7 @@ export  async function PUT(request) {
                 info = VALUES(info)
         `;
 
-        const connection = await databaseConnection()
+        connection = await databaseConnection()
 
         const isCreationSuccess = await executeQuery(connection, query);
 
@@ -50,6 +50,10 @@ export  async function PUT(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }
 
@@ -57,14 +61,14 @@ export  async function GET(request) {
 
     const { searchParams } = new URL(request.url)
     const userName = searchParams.get('username')
-
+    let connection = false
     try {
         // Save the title and filenames in the MySQL database
         const query = `SELECT * from key_stats 
             WHERE username = '${userName}'
         `;
 
-        const connection = await databaseConnection()
+        connection = await databaseConnection()
         
 
         const keystat = await executeQuery(connection, query);
@@ -85,5 +89,9 @@ export  async function GET(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }

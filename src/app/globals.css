@@ -57,3 +57,40 @@ html, body {
 .grid-inner:hover .tooltip-wrapper{
     display: block!important;
 }
+
+
+.table-container {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table-header {
+    background-color: #123456;
+    color: white;
+    text-align: center;
+  }
+  
+  .table-cell {
+    text-align: center;
+    padding: 8px;
+  }
+  
+  .table-row {
+    border: 1px solid #ddd;
+  }
+  
+  .table-row:nth-child(even) {
+    background-color: #f6f5f5;
+  }
+  
+  
+  .check-icon {
+    font-size: 24px;
+    color: green;
+  }
+
+  .active-nav{
+    color:red;
+    font-weight: bold;
+    border-bottom: 5px solid red;
+  }

@@ -6,7 +6,7 @@ import { databaseConnection,getLoggedInUsername, generateToken, executeQuery} fr
 export  async function GET(request) {
     const { searchParams } = new URL(request.url)
     const userName = searchParams.get('username')
-    
+    let connection = false
     try {
 
 
@@ -14,7 +14,8 @@ export  async function GET(request) {
             WHERE user_id = '${userName}' AND is_active=1
             ORDER BY created_at DESC
         `;
-        const connection = await databaseConnection();
+        
+        connection = await databaseConnection();
 
 
         const press_or_interviews = await new Promise((resolve, reject) => {
@@ -111,5 +112,9 @@ export  async function GET(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }

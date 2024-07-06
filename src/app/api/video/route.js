@@ -5,14 +5,14 @@ export  async function GET(request) {
 
     const { searchParams } = new URL(request.url)
     const userName = searchParams.get('username')
-
+    let connection = false
     try {
         // Save the title and filenames in the MySQL database
         const query = `SELECT * from videos 
             WHERE user_id = '${userName}' AND is_active=1
             ORDER BY created_at DESC
         `;
-        const connection = await databaseConnection();
+        connection = await databaseConnection();
 
         const videos = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {
@@ -39,12 +39,16 @@ export  async function GET(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }
 
 
 export async function DELETE(request) {
-
+    let connection = false
     try {
         const userID = getLoggedInUsername();
         const data = await request.formData()
@@ -54,7 +58,8 @@ export async function DELETE(request) {
             SET is_active = 0 
             WHERE id = '${video_id}' AND user_id='${userID}'
         `;
-
+        connection = await databaseConnection()
+        
         const result = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {
                 if (error) {
@@ -82,6 +87,10 @@ export async function DELETE(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }
 

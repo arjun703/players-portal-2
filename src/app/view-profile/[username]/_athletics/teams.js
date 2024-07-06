@@ -346,6 +346,7 @@ export default function Team({isEditable, teams, handleAddNew, handleEdit, handl
                             </Grid>                             
                             <Teams 
                                 teams={teams}
+                                isEditable={isEditable}
                                 handleEdit={initiateEditTeam}
                                 handleDelete={initiateDeleteTeam}
                             />
@@ -450,7 +451,6 @@ function Teams({isEditable, teams, handleAddNew, handleEdit, handleDelete}){
                                     {
                                         isEditable ? (
 
-
                                             <div className="tooltip-wrapper"  
                                             style={{position:'absolute', display: !isMobile ? 'none': 'block!important',  bottom: '10px', right: '10px'}} 
                                         >
@@ -477,6 +477,7 @@ function Teams({isEditable, teams, handleAddNew, handleEdit, handleDelete}){
                                         ): (
                                             <></>
                                         )
+                                        
                                     }
 
                                 </div>

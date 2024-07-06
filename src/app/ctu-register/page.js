@@ -24,7 +24,7 @@ export default function LandingPage(){
 
     const [isLoading, setIsLoading] = useState(false)
 
-    const handleChange = (prop, value) => {
+    const handleChange = (attr, value) => {
         setProp(prevProp => ({
             ...prevProp,  // maintain previous properties
             [attr]: value // update the specific attribute
@@ -32,19 +32,29 @@ export default function LandingPage(){
     }
 
     const handleRegister = async () => {
-        if(email.length === 0 || password.length === 0 || name.length === 0 || password !== confirm_password) {
-            console.log("Some fields are wrong")
+
+        if( !('name' in prop && 'sport_type' in prop && 'email' in prop && 'password' in prop && 'confirm_password' in prop) ) {
+            alert("Name / email / password / sport type should be filled in")
             return
         }
+
+        if(prop.password.trim() !== prop.confirm_password){
+            alert("Passwords do not match.")
+            return
+        }
+
+        if(prop.name.trim().length == 0 || prop.sport_type.trim().length == 0 || prop.email.trim().length == 0){
+            alert("Name / email / password/ sport type can't be blank")
+            return
+        }
+
         const formData = new FormData();
         setIsLoading(true)
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('password', password);
-        const result = await pOSTRequest(formData, 'api/auth/register/')
+        formData.append('info', JSON.stringify(prop));
+        const result = await pOSTRequest(formData, 'api/auth/ctu-register/')
         if (result.success === true) {
             localStorage.setItem('token', result.token);
-            router.push('/dashboard')
+            router.push('/club-dashboard')
         } else {
             alert(result.msg)
             setIsLoading(false)
@@ -54,7 +64,6 @@ export default function LandingPage(){
 
     return (
         <div>
-
             <Header user={false} />
 
             <div maxWidth="lg" >
@@ -101,10 +110,10 @@ export default function LandingPage(){
 
                                     <Stack spacing={2}>
                                         <TextField onChange={(e)=>handleChange('official_reg_name', e.target.value.trim())} label="Official Reg Name" variant="outlined" fullWidth  />
-                                        <TextField onChange={(e)=>setEmail('club_team_uni', e.target.value.trim())} label="Club? / Team? / University?" variant="outlined" fullWidth  />
-                                        <TextField onChange={(e)=>setPassword('official_org_email', e.target.value.trim())}   label="Official Org Email" variant="outlined"  fullWidth  />
-                                        <TextField onChange={(e)=>setPassword('reg_address', e.target.value.trim())}   label="Reg Address" variant="outlined"  fullWidth  />
-                                        <TextField onChange={(e)=>setPassword('reg_contact_number', e.target.value.trim())}   label="Reg Contact Number" variant="outlined"  fullWidth  />
+                                        <TextField onChange={(e)=>handleChange('club_team_uni', e.target.value.trim())} label="Club? / Team? / University?" variant="outlined" fullWidth  />
+                                        <TextField onChange={(e)=>handleChange('official_org_email', e.target.value.trim())}   label="Official Org Email" variant="outlined"  fullWidth  />
+                                        <TextField onChange={(e)=>handleChange('reg_address', e.target.value.trim())}   label="Reg Address" variant="outlined"  fullWidth  />
+                                        <TextField onChange={(e)=>handleChange('reg_contact_number', e.target.value.trim())}   label="Reg Contact Number" variant="outlined"  fullWidth  />
                                     </Stack>  
                                 </Paper>
                             </Grid>
@@ -120,10 +129,7 @@ export default function LandingPage(){
                                 {lang.sign_up_text}
                             </Button> 
                         </div>
-
                     </Paper>
-
-
                 </div>
             </div>
         </div>

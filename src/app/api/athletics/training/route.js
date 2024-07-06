@@ -6,6 +6,8 @@ import { databaseConnection, getLoggedInUsername, generateToken, executeQuery} f
 
 export  async function POST(request) {
 
+    let connection =false
+
     try {
 
         const data = await request.formData()
@@ -20,7 +22,8 @@ export  async function POST(request) {
             VALUES 
             ('${id}', '${getLoggedInUsername()}',  '${trainingInfo}')
         `;
-        const connection = await databaseConnection();
+        
+        connection = await databaseConnection();
 
         connection.query(query, (error, results) => {
             if (error) {
@@ -45,6 +48,10 @@ export  async function POST(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }
 

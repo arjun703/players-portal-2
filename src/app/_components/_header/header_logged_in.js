@@ -135,42 +135,54 @@ function HeaderCenterMenuItemsForLoggedIn(){
   const username = getUserNameFromToken()
   const userType =getUserTypeFromToken()
   const decideDashboardPath = () => {
-    if(userType ==''){
+    if(userType =='athlete'){
       pathname != '/dashboard' ? router.push('/dashboard') : '' 
     }else if(userType == 'coach'){
       pathname != '/coach-dashboard' ? router.push('/coach-dashboard') : '' 
+    }else if(userType == 'club'){
+      pathname != '/club-dashboard' ? router.push('/club-dashboard') : '' 
     }
   }
 
   const decideProfilePath = () => {
-    if(userType ==''){
+    if(userType =='athlete'){
       pathname != '/view-profile/'+username ? router.push('/view-profile/'+username ) : '' 
     }else if(userType == 'coach'){
-      pathname != '/coach-edit-profile' ? router.push('/coach-edit-profile') : '' 
+      pathname != '/edit-coach-profile' ? router.push('/edit-coach-profile') : '' 
+    }else if(userType == 'club'){
+      pathname != '/edit-club-profile' ? router.push('/edit-club-profile') : '' 
     }
   }
 
   return(
     <>
-      <ListItemButton style={{borderBottom: pathname === '/dashboard' ? '2px solid red' : ''}}
+      <ListItemButton style={{borderBottom: pathname.includes('dashboard') ? '2px solid red' : ''}}
         onClick={decideDashboardPath}
       >
-         <ListItemIcon sx={{display: {xs: 'flex', lg: 'none'}}}><DashboardIcon /></ListItemIcon>
-          <ListItemText primary={'Dashboard'} />
+        <ListItemIcon sx={{display: {xs: 'flex', lg: 'none'}}}><DashboardIcon /></ListItemIcon>
+        <ListItemText primary={'Dashboard'} />
       </ListItemButton>
       <ListItemButton
-      style={{borderBottom: pathname === '/view-profile/'+username ? '2px solid red' : ''}} 
+      style={{borderBottom: pathname.includes('profile') ? '2px solid red' : ''}} 
         onClick={decideProfilePath}
       >
           <ListItemIcon sx={{display: {xs: 'flex', lg: 'none'}}}><AccountBoxIcon /></ListItemIcon>
+          <ListItemText primary={'Profile'}  />
+      </ListItemButton>
 
-        <ListItemText
-          primary={'Profile'} 
-        />
+      <ListItemButton
+      style={{borderBottom: pathname.includes('accout') ? '2px solid red' : ''}} 
+        onClick={() => { router.push('/account')}}
+      >
+        <ListItemIcon sx={{display: {xs: 'flex', lg: 'none'}}}><AccountBoxIcon /></ListItemIcon>
+        <ListItemText primary={'Account'} />
       </ListItemButton>
     </>
   );
 }
+
+
+import logOut from '@/app/_components/logout'
 
 function HeaderRightIcons({isAtLeastMd, handleSearchIconClick}){
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -234,7 +246,7 @@ function HeaderRightIcons({isAtLeastMd, handleSearchIconClick}){
                     </Box>
                     <ListItemButton onClick={()=>{ handleClick()}}>
                     <ListItemIcon><LogoutIcon /></ListItemIcon>
-                      <ListItemText primary={'Log Out'} />
+                      <ListItemText onClick={logOut} primary={'Log Out'} />
                     </ListItemButton>
               </List>
             </div>

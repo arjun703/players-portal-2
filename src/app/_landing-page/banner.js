@@ -12,16 +12,16 @@ export default function Banner() {
     const lang = useLang();
     const router = useRouter();
     const handleClick = () => {
-        router.push('/register')
+        router.push('/register-options')
     }
     return (
-        <div class="banner position-relative">
-            <div class="banner-image">
-                <img src="/site-assets/banner.webp" class="banner-image" alt="Tennis Hero" />
+        <div className="banner position-relative">
+            <div className="banner-image">
+                <img src="/site-assets/banner.webp" className="banner-image" alt="Tennis Hero" />
             </div>
-            <div class="position-absolute-lg">
+            <div className="position-absolute-lg">
                 <Box>
-                    <div class="banner-card-wrapper">
+                    <div className="banner-card-wrapper">
                         <Card variant="outlined">
                             <CardContent>
                                 <Typography variant="h4" sx={{fontWeight:700}} gutterBottom>
@@ -31,9 +31,9 @@ export default function Banner() {
                                     {lang.we_help_high_school_text}
                                 </Typography>
                             </CardContent>
-                            <div  class="banner-cardactions-wrapper">
+                            <div  className="banner-cardactions-wrapper">
                                 <CardActions>
-                                    <div class="banner-button-wrapper">
+                                    <div className="banner-button-wrapper">
                                         <Button 
                                             sx={{minWidth: '250px'}} 
                                             variant="solid" 

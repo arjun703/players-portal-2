@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 export  async function POST(request) {
-
+    let connection = false
     try {
 
         const data = await request.formData()
@@ -28,7 +28,7 @@ export  async function POST(request) {
             VALUES 
             ('${id}', '${title}', '', '${youtubeVideoURL}', 'youtube', '${getLoggedInUsername()}')
         `;
-        const connection = await databaseConnection();
+        connection = await databaseConnection();
 
         connection.query(query, (error, results) => {
             if (error) {
@@ -53,5 +53,9 @@ export  async function POST(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }

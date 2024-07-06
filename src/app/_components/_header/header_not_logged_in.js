@@ -79,25 +79,48 @@ function MenuItems({isLoggedIn}){
     </>
   );
 }
+import { usePathname } from 'next/navigation';
 
 function HeaderCenterMenuItemsForLoggedIn(){
+  const router = useRouter()
+  const pathname = usePathname()
 
   return(
     <>
 
 
-      <ListItemButton 
-        sx={{textAlign:'center'}}
-      >
-          <ListItemText primary={'About Us'} />
-      </ListItemButton>
-      <ListItemButton
+
+          <ListItemButton 
+                  className={pathname == '/about-us' ? 'active-nav' :''}
+
+            onClick={()=> router.push('/about-us')}
+            sx={{textAlign:'center'}}
+          >
+            <ListItemText primary={'About Us'} />
+          </ListItemButton>
       
+          <ListItemButton
+              className={pathname == '/contact-us' ? 'active-nav' :''}
+
       >
 
         <ListItemText
+                    onClick={()=> router.push('/contact-us')}
+
       sx={{textAlign:'center'}}
           primary={'Contact Us'} 
+        />
+      </ListItemButton>
+      
+      <ListItemButton
+        className={pathname == '/pricing' ? 'active-nav' :''}
+      >
+
+        <ListItemText
+                    onClick={()=> router.push('/pricing')}
+
+      sx={{textAlign:'center'}}
+          primary={'Pricing'} 
         />
       </ListItemButton>
 
@@ -122,7 +145,7 @@ function LoginAndSignUpButtons(){
               <Button onClick={()=> router.push('/login')} sx={{display: {xs: 'none', lg: 'flex'}}} variant='outlined'>
             Login
           </Button>
-          <Button onClick={()=> router.push('/register')} sx={{display: {xs: 'none', lg: 'flex'}}} variant='solid'>
+          <Button onClick={()=> router.push('/register-options')} sx={{display: {xs: 'none', lg: 'flex'}}} variant='solid'>
             Sign Up
           </Button></>
   )
@@ -193,7 +216,7 @@ function HeaderRightIcons({isAtLeastMd, handleSearchIconClick}){
 
                     <Stack spacing={2} sx={{marginTop:'15px'}}>
                     <div style={{display:'flex', justifyContent:'center'}}>
-                        <Button style={{width:'80%'}} onClick={()=> router.push('/register')} variant='solid'>
+                        <Button style={{width:'80%'}} onClick={()=> router.push('/register-options')} variant='solid'>
                           Sign Up
                         </Button>
                       </div>

@@ -9,13 +9,13 @@ export  async function GET(request) {
 
         // Save the title and filenames in the MySQL database
         const query = `
-            SELECT only_coach.username, profile_pic, info FROM users 
-            INNER JOIN only_coach ON users.username = only_coach.username AND only_coach.username = '${getLoggedInUsername()}'
+            SELECT only_club.username, profile_pic, info FROM users 
+            INNER JOIN only_club ON users.username = only_club.username AND only_club.username = '${getLoggedInUsername()}'
         `;
 
-        connection = await databaseConnection();
+         connection = await databaseConnection();
 
-        let coach = await new Promise((resolve, reject) => {
+        let club = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {
                 if (error) {
                     reject(new Error('Error fetching data from database: ' + error.message));
@@ -25,18 +25,18 @@ export  async function GET(request) {
             });
         });
 
-        if(coach.length){
-            coach = coach[0]
+        if(club.length){
+            club = club[0]
         }
 
-        const trackedPlayerQuery = `
-            SELECT athlete_username, profile_pic, name FROM coach_athlete 
-            INNER JOIN basic_info ON basic_info.username = coach_athlete.athlete_username AND coach_athlete.coach_username = '${getLoggedInUsername()}'
-            INNER JOIN users ON users.username=coach_athlete.athlete_username
-            `;
+        const clubMemberQuery = `
+            SELECT athlete_username	, name, profile_pic FROM club_athlete 
+            INNER JOIN basic_info ON basic_info.username = club_athlete.athlete_username AND club_athlete.club_username = '${getLoggedInUsername()}'
+            INNER JOIN users ON users.username=club_athlete.athlete_username
+        `;
 
-        const trackedPlayers = await new Promise((resolve, reject) => {
-            connection.query(trackedPlayerQuery, (error, results) => {
+        const playersInClub = await new Promise((resolve, reject) => {
+            connection.query(clubMemberQuery, (error, results) => {
                 if (error) {
                     reject(new Error('Error fetching data from database: ' + error.message));
                 } else {
@@ -46,7 +46,7 @@ export  async function GET(request) {
         });
 
 
-        return new Response(JSON.stringify({success: true, coach: coach, trackedPlayers: trackedPlayers }), {
+        return new Response(JSON.stringify({success: true, club: club, playersInClub: playersInClub }), {
             headers: {
                 "Content-Type": "application/json"
             },

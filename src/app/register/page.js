@@ -60,7 +60,7 @@ export default function LandingPage(){
                             <Grid item lg={6} xs={12} sx={{display: 'flex', justifyContent: 'center', alignItems:'center'}} >
                                 <div >
                                     <div>
-                                        <h3>Create an  Account</h3>
+                                        <h3>Create an athlete Account</h3>
                                         <p>Please fillup the necessary details.</p>
                                     </div>
                                 </div>

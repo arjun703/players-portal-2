@@ -74,8 +74,8 @@ export  async function GET(request) {
         connection = await databaseConnection()
 
         // Save the title and filenames in the MySQL database
-        const query = `SELECT athlete_username from coach_athlete 
-            WHERE coach_username = '${getLoggedInUsername()}' AND athlete_username = '${userName}'
+        const query = `SELECT athlete_username from club_athlete 
+            WHERE club_username = '${getLoggedInUsername()}' AND athlete_username = '${userName}'
         `;
         
 
@@ -85,13 +85,13 @@ export  async function GET(request) {
             var query2 = ''
             if(action == 'add' && basic_info.length == 0){
 
-                query2 = `INSERT INTO coach_athlete (coach_username, athlete_username) 
+                query2 = `INSERT INTO club_athlete (club_username, athlete_username) 
                     VALUES ('${getLoggedInUsername()}', '${userName}') 
                 `
 
             }else if(action =='remove' && basic_info.length == 1){
-                query2 = `DELETE FROM   coach_athlete
-                   WHERE coach_username='${getLoggedInUsername()}' AND athlete_username = '${userName}'
+                query2 = `DELETE FROM   club_athlete
+                   WHERE club_username='${getLoggedInUsername()}' AND athlete_username = '${userName}'
                 `
 
             }

@@ -37,8 +37,10 @@ export default function LandingPage(){
             localStorage.setItem('token', result.token);
             if(result.type == 'coach'){
                 router.push('/coach-dashboard')
+            }else if(result.type == 'club'){
+                router.push('/club-dashboard')
             }else{
-                router.push('/dashboard')
+                router.push('/dashboard') 
             }
         } else {
             alert(result.msg)

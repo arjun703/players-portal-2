@@ -4,10 +4,10 @@ import {  getLoggedInUsername,databaseConnection, generateToken, executeQuery} f
 export  async function GET(request) {
 
     const loggedinUser = getLoggedInUsername()
-
+    let connection = false
     try {
         // Save the title and filenames in the MySQL database
-        const query = `SELECT 
+        let query = `SELECT 
         COUNT(DISTINCT academic_files.id)  AS total_academic_files, 
         COUNT(DISTINCT additional_sports.id)  AS total_additional_sports,
         basic_info.name AS name,
@@ -43,9 +43,9 @@ export  async function GET(request) {
         basic_info.username = '${getLoggedInUsername()}';
         
         `;
-        const connection = await databaseConnection();
+        connection = await databaseConnection();
 
-        const user = await new Promise((resolve, reject) => {
+        let user = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {
                 if (error) {
                     reject(new Error('Error fetching data from database: ' + error.message));
@@ -54,6 +54,12 @@ export  async function GET(request) {
                 }
             });
         });
+
+        query = `SELECT profile_pic from users WHERE username = '${getLoggedInUsername()}' `;
+
+        let profile_pic = await executeQuery(connection, query);
+
+        user[0].profile_pic = profile_pic[0].profile_pic
 
         return new Response(JSON.stringify({success: true, user: user }), {
             headers: {
@@ -70,5 +76,9 @@ export  async function GET(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }

@@ -95,21 +95,17 @@ export default function BasicInfo({username}){
                 {!isEditing && (
                     <>
                         <Grid container spacing={2} style={{ paddingBottom: '30px' }}>
-                            <Grid item xs={12} md={6} lg={4}>
+                            <Grid item xs={12} md={6}>
                                 <Stack spacing={2}>
                                     <GeneralInfo basicInfo={basicInfo} />
                                     <ContactInfo basicInfo={basicInfo} />
                                 </Stack>
                             </Grid>
-                            <Grid item xs={12} md={6} lg={4}>
+                            <Grid item xs={12} md={6}>
                                 <Stack spacing={2}>
                                     <PersonalStatement basicInfo={basicInfo} />
-                                    <SocialLinks basicInfo={basicInfo} />
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={12} md={6} lg={4}>
-                                <Stack spacing={2}>
                                     <GuardianInfo basicInfo={basicInfo} />
+                                    <SocialLinks basicInfo={basicInfo} />
                                 </Stack>
                             </Grid>
                         </Grid>
@@ -124,7 +120,7 @@ export default function BasicInfo({username}){
                 )}
 
                 {isEditing && (
-                    <Paper sx={{padding: '10px 20px', paddingBottom:'90px'}}> 
+                    <Paper sx={{padding: '10px 20px', paddingBottom:'90px' }}> 
                         
                         <Divider><h2>Edit Basic Info</h2></Divider>
 
@@ -275,7 +271,7 @@ export default function BasicInfo({username}){
                                     sx={{width : '100%'}}
                                     minRows={3} // Specify the minimum number of rows
                                     maxRows={5} // Specify the maximum number of rows
-                                    defaultValue={basicInfo?.personal_statement || ''}
+                                    defaultValue={basicInfo?.personalStatement || ''}
                                 />    
                                 </FormControl>
                             </Grid>
@@ -401,7 +397,7 @@ export default function BasicInfo({username}){
                         </Grid>
 
                         <div style={{display: 'flex', justifyContent: 'space-around'}}>
-                            <div style={{position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)'}}>
+                            <div style={{position: 'fixed', bottom: '20px', left: '60%', transform: 'translateX(-60%)'}}>
                                 <div style={{backgroundColor:'white', padding:'20px'}}>
                                     <Button
                                         onClick={handleEdit} 

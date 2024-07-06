@@ -179,13 +179,17 @@ export default function Videos({username}) {
                       videos
                       .map((video,index) => 
                         <Collapse key={video.id} >
-                          <SortableVideoItem handleDelete={handleDelete} video={video} key={'video-'+video.id}  id={'video-'+video.id} />
+                          <SortableVideoItem editable={editable} handleDelete={handleDelete} video={video} key={'video-'+video.id}  id={'video-'+video.id} />
                         </Collapse>
                       )
                     }
                   </TransitionGroup>
                 </Paper>
-                <FloatingActionButton btnIcon={<AddIcon />} btnTitle='Add New Video' handler={handleAddNewVideo} />
+                {
+                  editable && (
+                    <FloatingActionButton btnIcon={<AddIcon />} btnTitle='Add New Video' handler={handleAddNewVideo} />
+                  )
+                }
               </SortableContext>
           )
           : ( !addingNewVideo &&
@@ -263,7 +267,7 @@ function DisplayNoVideos({isLoadingVideos, openAddNewVideoForm, editable =false}
 }
 
 
-export function SortableVideoItem({video, handleDelete}) {
+export function SortableVideoItem({video, handleDelete, editable=false}) {
   const {
     attributes,
     listeners,
@@ -327,11 +331,15 @@ export function SortableVideoItem({video, handleDelete}) {
             </Typography>
           </div>
         </Grid>
-        <Grid item auto sx={{justifyContent: 'flex-end', paddingLeft: '5px'}}>
-          <div >
-            <IconButton><DeleteIcon onClick={()=>{displayPrompt(video.id)}} /></IconButton>
-          </div>
-        </Grid>
+        {
+          editable && (
+            <Grid item auto sx={{justifyContent: 'flex-end', paddingLeft: '5px'}}>
+              <div >
+                <IconButton><DeleteIcon onClick={()=>{displayPrompt(video.id)}} /></IconButton>
+              </div>
+            </Grid>
+          )
+        }
       </Grid>
       {
         isWaitingForConfirmation.waiting && 

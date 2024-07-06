@@ -4,6 +4,8 @@ import path from 'path';
 
 export  async function POST(request) {
 
+    let connection = false
+
     try {
 
 
@@ -19,7 +21,7 @@ export  async function POST(request) {
             VALUES 
             ('${id}', '${getLoggedInUsername()}',  '${pressOrInterviewInfo}')
         `;
-        const connection = await databaseConnection();
+         connection = await databaseConnection();
 
         connection.query(query, (error, results) => {
             if (error) {
@@ -44,6 +46,10 @@ export  async function POST(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }
 
@@ -51,6 +57,7 @@ export  async function POST(request) {
 
 export  async function PUT(request) {
 
+    let connection = false
     try {
 
         const data = await request.formData()
@@ -66,7 +73,8 @@ export  async function PUT(request) {
             WHERE id = '${id}'
             AND user_id='${getLoggedInUsername()}'
         `;
-        const connection = await databaseConnection();
+        
+        connection = await databaseConnection();
 
         connection.query(query, (error, results) => {
             if (error) {
@@ -91,12 +99,17 @@ export  async function PUT(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }
 
 
 export async function DELETE(request) {
 
+    let connection =false
 
     try {
         const userID = '1234';
@@ -117,7 +130,8 @@ export async function DELETE(request) {
                 }
             });
         });
-        const connection = await databaseConnection();
+        
+        connection = await databaseConnection();
 
         const successStatus  = result.affectedRows > 0
 
@@ -136,5 +150,9 @@ export async function DELETE(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }

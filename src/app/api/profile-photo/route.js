@@ -1,61 +1,61 @@
-import { databaseConnection, getLoggedInUsername,generateToken, executeQuery} from '@/app/api/utils'
+import { databaseConnection, generateRandomString, getLoggedInUsername,generateToken, executeQuery} from '@/app/api/utils'
 import basicInfo from '@/app/view-profile/[username]/_basic-info/general_info'
+import { getLoadingButtonUtilityClass } from '@mui/lab'
+import { exec } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
-export  async function PUT(request) {
+export  async function POST(request) {
+
+    let connection = false
 
     try {
 
         const data = await request.formData()
 
-        const info = data.get('info')
-        
-        const infoJSON = JSON.parse(info)
+        const profile_photo = data.get('profile_photo')
 
-        const name = infoJSON?.name || ''
-        const gender = infoJSON?.gender || ''
-
-        if(name.trim().length === 0){
-            throw new Error('Fill sport fields')
+        const id=generateRandomString(20)
+        const profile_photoFileName = generateRandomString(20) + path.extname(profile_photo.name);
+       
+        if( !(['.jpg', '.jpeg', '.png', '.gif', '.bmp'].includes(path.extname(profile_photo.name.toLowerCase())))){
+            throw new Error('Error - Invalid image format. Supported types are jpg, png, gif, bmp')
         }
-
-        const username = getLoggedInUsername();
+        
+        const profile_photoBuffer = await profile_photo.arrayBuffer(); // Get the file data as a Buffer or ArrayBuffer
+        
+        await fs.promises.writeFile(path.join(process.cwd(), 'public/files/', profile_photoFileName), Buffer.from(profile_photoBuffer));
 
         // Save the title and filenames in the MySQL database
-        const query = `
-            INSERT INTO basic_info(username, info, name, gender) VALUES (
-                '${username}', '${info}', '${name}', '${gender}'
-            )
-            ON DUPLICATE KEY UPDATE 
-                username = VALUES(username),
-                info = VALUES(info),
-                name = VALUES(name),
-                gender = VALUES(gender)
+        const query = `UPDATE users SET profile_pic = '${profile_photoFileName}' WHERE username = '${getLoggedInUsername()}'  
         `;
 
-        const connection = await databaseConnection()
+        connection = await databaseConnection();
 
-        const isCreationSuccess = await executeQuery(connection, query);
+        const result = await executeQuery(connection, query);
 
-        if(isCreationSuccess){
 
-            return new Response(JSON.stringify({ success: true}), {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                status: 201
-            });
-
-        }else{
-            throw new Error('Unknown error occured while editing basic info. Plese try again later. Error Code: BasicInfoUpsert')
-        }
+        return new Response(JSON.stringify({ success: true, profile_photo: {
+            profile_photo_src: profile_photoFileName
+        }}), {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            status: 201
+        });
 
     } catch (error) {
+        console.log(error)
         return new Response(JSON.stringify({ success: false, msg: error.message  }), {
             headers: {
                 "Content-Type": "application/json"
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }
 
