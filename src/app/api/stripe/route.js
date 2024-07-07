@@ -17,7 +17,9 @@ export  async function POST(request) {
         // Handle the event
         switch (event.type) {
             case 'payment_intent.succeeded':
-                const email = event.data.object.billing_details.email
+                const paymentMethodID = event.data.object.payment_method
+                const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodID);
+                const email = paymentMethod.billing_details.email
                 // log this in database
                 connection = await databaseConnection()
                 let query = `INSERT INTO subscriptions (email, amount) VALUES('${email}', '123') `;
@@ -36,11 +38,15 @@ export  async function POST(request) {
     } catch (err) {
         // On error, log and return the error message
         console.log(`❌ Error message: ${err.message}`)
+        return new Response(JSON.stringify({ success: false }), {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            status: 500
+        });
     }finally{
         if(connection){
             connection.end()
         }
     }
-
-
 }
