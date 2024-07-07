@@ -43,7 +43,7 @@ const ProfilePictureModal = ({ existingProfileImageLink, onClose }) => {
         const result = await pOSTRequest(formData, '/api/profile-photo/')
 
         if(result.success){
-          alert('Profile picture updated.')
+          onClose(result.profile_photo.profile_photo_src)
         }else{
           throw new Error(result.msg);
         }

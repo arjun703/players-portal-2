@@ -68,8 +68,18 @@ export default function Dashboard() {
 
   const [modalOpen, setModalOpen]  = useState(false)
 
-  const handleProfilePicUploadModalClose = () => {
+  const handleProfilePicUploadModalClose = (profile_pic = '') => {
     setModalOpen(!modalOpen)
+    if(profile_pic !== ''){
+      const newProfilePicUrl = profile_pic;
+      setDashboardInfo(prevState => ({
+        ...prevState,
+        coach: {
+            ...prevState.coach,
+            profile_pic: newProfilePicUrl
+        }
+      }));
+    }
   }
 
   return (
