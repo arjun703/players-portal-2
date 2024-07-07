@@ -1,6 +1,5 @@
 import {generateRandomString, databaseConnection,getLoggedInUsername} from '@/app/api/utils'
-import fs from 'fs';
-import path from 'path';
+
 
 export  async function POST(request) {
 

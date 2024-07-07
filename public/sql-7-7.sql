@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2024 at 07:16 AM
+-- Generation Time: Jul 07, 2024 at 07:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,14 +24,24 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `subscriptions`
+-- Table structure for table `coaches`
 --
 
-CREATE TABLE `subscriptions` (
-  `email` varchar(1000) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `amount` varchar(10) NOT NULL
+CREATE TABLE `coaches` (
+  `id` varchar(333) NOT NULL,
+  `user_id` varchar(222) NOT NULL,
+  `info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`info`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `coaches`
+--
+ALTER TABLE `coaches`
+  ADD PRIMARY KEY (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
