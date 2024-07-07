@@ -13,12 +13,7 @@ const ProfilePictureModal = ({ existingProfileImageLink, onClose }) => {
   const [ showButtons, setShowButtons] = useState(false); // State to manage showing buttons
   const [media, setMedia]  = useState(false)
   const [isUploading, setIsUploading] = useState(false)
-
-console.log(existingProfileImageLink)
-
-
-
-
+  console.log(existingProfileImageLink) 
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -35,7 +30,7 @@ console.log(existingProfileImageLink)
     }
   };
 
-  const [isReloading, setIsReloading]= useState(true)
+
 
   const handleFileUpload = async () => {
     if(!(!media && caption.trim().length == 0)){
@@ -46,10 +41,8 @@ console.log(existingProfileImageLink)
         const result = await pOSTRequest(formData, '/api/profile-photo/')
 
         if(result.success){
-          setTimeout(function(){          window.location.href = location.href
-          }, 100)
-          // return result.profile_photo;
-          
+          onClose()
+          location.reload()
         }else{
           throw new Error(result.msg);
         }
@@ -126,7 +119,7 @@ console.log(existingProfileImageLink)
             <Button
               variant="outlined"
               component="label"
-              sx={{display: (isUploading || isReloading) ? 'none': ''}}
+              sx={{display: isUploading ? 'none': ''}}
               startDecorator={<PhotoCameraIcon />}
               onClick={handleFileChange}
             >
@@ -138,7 +131,7 @@ console.log(existingProfileImageLink)
                 onChange={handleFileChange}
               />
             </Button>
-            <Button sx={{width: isUploading ? '100%': 'auto'}} onClick={handleFileUpload} variant="solid" loading={isUploading || isReloading } >
+            <Button sx={{width: isUploading ? '100%': 'auto'}} onClick={handleFileUpload} variant="solid" loading={isUploading} >
               Confirm
             </Button>
           </Box>
