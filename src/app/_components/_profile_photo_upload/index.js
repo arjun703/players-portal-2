@@ -32,6 +32,7 @@ const ProfilePictureModal = ({ existingProfileImageLink, onClose }) => {
   };
 
 
+  const router = useRouter()
 
   const handleFileUpload = async () => {
     if(!(!media && caption.trim().length == 0)){
@@ -42,7 +43,6 @@ const ProfilePictureModal = ({ existingProfileImageLink, onClose }) => {
         const result = await pOSTRequest(formData, '/api/profile-photo/')
 
         if(result.success){
-          const router = useRouter()
           router.refresh()
         }else{
           throw new Error(result.msg);
