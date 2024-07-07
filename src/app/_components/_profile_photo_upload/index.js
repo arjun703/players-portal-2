@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+'use client'
 import { Modal, Box, Avatar, Divider  } from '@mui/material';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import Button from '@mui/joy/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import {pOSTRequest, dELETErequest} from '@/app/_components/file_upload';
+import { useRouter } from 'next/navigation'
 
 
 const ProfilePictureModal = ({ existingProfileImageLink, onClose }) => {
@@ -41,8 +42,8 @@ const ProfilePictureModal = ({ existingProfileImageLink, onClose }) => {
         const result = await pOSTRequest(formData, '/api/profile-photo/')
 
         if(result.success){
-          onClose()
-          location.reload()
+          const router = useRouter()
+          router.refresh()
         }else{
           throw new Error(result.msg);
         }
