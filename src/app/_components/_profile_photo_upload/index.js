@@ -42,15 +42,17 @@ const ProfilePictureModal = ({ existingProfileImageLink, onClose }) => {
         formData.append('profile_photo', media);
         const result = await pOSTRequest(formData, '/api/profile-photo/')
         if(result.success){
-          onClose()
-          location.reload()
+          setTimeout(() => {
+            location.reload()
+          }, 1000);
         }else{
           throw new Error(result.msg);
         }
       }catch(error){
         console.error(error)
-      }finally{
         setIsUploading(false)
+      }finally{
+        
       }
     }
   }
