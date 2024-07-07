@@ -43,6 +43,7 @@ export default function Dashboard() {
   const [club, setclub] = useState({})
   const [playersInClub, setPlayersInClub] = useState([])
   const [loading, setIsLoading] = useState(true)
+  const [modalOpen, setModalOpen]  = useState(false)
 
   useEffect(() => {
     async function fetchDashboard() {
@@ -64,7 +65,6 @@ export default function Dashboard() {
     fetchDashboard();
   }, [modalOpen]); 
 
-  const [modalOpen, setModalOpen]  = useState(false)
 
   const handleProfilePicUploadModalClose = () => {
     setModalOpen(!modalOpen)

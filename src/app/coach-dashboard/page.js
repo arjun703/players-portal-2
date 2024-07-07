@@ -45,6 +45,8 @@ export default function Dashboard() {
   const [trackedPlayers, setTrackedPlayers] = useState([])
   const [loading, setIsLoading] = useState(true)
   const [grids, setGrids] = useState([])
+  const [modalOpen, setModalOpen]  = useState(false)
+
   useEffect(() => {
     async function fetchDashboard() {
         try {
@@ -66,7 +68,6 @@ export default function Dashboard() {
   }, [modalOpen]); 
 
 
-  const [modalOpen, setModalOpen]  = useState(false)
 
   const handleProfilePicUploadModalClose = () => {
     setModalOpen(!modalOpen)
