@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2024 at 07:47 AM
+-- Generation Time: Jul 07, 2024 at 07:50 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,15 +24,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `coaches`
+-- Table structure for table `basic_info`
 --
 
-CREATE TABLE `coaches` (
-  `id` varchar(333) NOT NULL,
-  `user_id` varchar(222) NOT NULL,
-  `info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`info`)),
-  `is_active` int(1) NOT NULL DEFAULT 1,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+CREATE TABLE `basic_info` (
+  `info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `name` varchar(222) NOT NULL,
+  `gender` varchar(222) NOT NULL,
+  `username` varchar(222) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -40,10 +39,10 @@ CREATE TABLE `coaches` (
 --
 
 --
--- Indexes for table `coaches`
+-- Indexes for table `basic_info`
 --
-ALTER TABLE `coaches`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `basic_info`
+  ADD PRIMARY KEY (`username`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
