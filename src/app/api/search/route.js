@@ -7,7 +7,7 @@ export  async function GET(request) {
     try {
         
         // Save the title and filenames in the MySQL database
-        const query = `SELECT DISTINCT basic_info.username as username, profile_pic, name, profile_photo_src, gender, sport from basic_info,  key_stats, users
+        const query = `SELECT DISTINCT basic_info.username as username, profile_pic, name, gender, sport from basic_info,  key_stats, users
             WHERE  basic_info.username = key_stats.username AND users.username = basic_info.username
             AND ( basic_info.name LIKE '%${sq}%'  OR key_stats.sport LIKE '%${sq}%' )
             LIMIT 50
