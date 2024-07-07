@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import {pOSTRequest, dELETErequest} from '@/app/_components/file_upload';
 import { useRouter } from 'next/navigation'
-
+import { useState } from 'react';
 
 const ProfilePictureModal = ({ existingProfileImageLink, onClose }) => {
   const [newProfileImage, setNewProfileImage] = useState(null);
