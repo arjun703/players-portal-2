@@ -41,9 +41,6 @@ export default function Dashboard() {
   const [dashboardInfo, setDashboardInfo] =  useState({})
   const [loading, setIsLoading] = useState(true)
   const [grids, setGrids] = useState([])
-  const [modalOpen, setModalOpen]  = useState(false)
-  const [profilePic, setProfilePic] = useState('')
-
   useEffect(() => {
     async function fetchDashboard() {
         try {
@@ -55,7 +52,6 @@ export default function Dashboard() {
             const users = data.user
             const user = users[0]
             setDashboardInfo(user);
-            setProfilePic(profilePic)
             setGrids([
               {label: 'Videos', count: user.total_videos},
               {label: 'Teams', count: user.total_teams},
@@ -74,12 +70,10 @@ export default function Dashboard() {
     fetchDashboard();
   }, []); 
 
-  const handleProfilePicUploadModalClose = (profile_pic = null) => {
+
+  const [modalOpen, setModalOpen]  = useState(false)
+  const handleProfilePicUploadModalClose = () => {
     setModalOpen(!modalOpen)
-    if(profile_pic){
-      console.log("profile pic", profile_pic)
-      setProfilePic(profile_pic)
-    }
   }
 
   return (
@@ -97,7 +91,7 @@ export default function Dashboard() {
                 {
                   modalOpen && (
                     <ProfilePictureModal onClose={handleProfilePicUploadModalClose} existingProfileImageLink={
-                      profilePic != null? '/files/'+profilePic:false
+                      dashboardInfo.profile_pic != null? '/files/'+dashboardInfo.profile_pic:false
                     } />
                   )
                 }
@@ -106,7 +100,7 @@ export default function Dashboard() {
                     <div style={{cursor: 'pointer', position:'relative'}}>
                       <Avatar
                         alt={dashboardInfo.name}
-                        src={profilePic != null ? '/files/'+profilePic : ''}
+                        src={dashboardInfo.profile_pic != null ? '/files/'+dashboardInfo.profile_pic : ''}
                         sx={{ width: {md:  80, xs: 80} , height:{md: 80, xs: 80}  }}
                       >
                       </Avatar>
