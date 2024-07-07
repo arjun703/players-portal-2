@@ -68,19 +68,12 @@ export default function Dashboard() {
         }
     }
     fetchDashboard();
-  }, []); 
-
+  }, [modalOpen]); 
 
   const [modalOpen, setModalOpen]  = useState(false)
-  const handleProfilePicUploadModalClose = (profile_pic = '') => {
+  const handleProfilePicUploadModalClose = () => {
     setModalOpen(!modalOpen)
-    if(profile_pic !== ''){
-      const newProfilePicUrl = profile_pic;
-      setDashboardInfo(prevState => ({
-          ...prevState,
-          profile_pic: newProfilePicUrl
-      }));
-    }
+
   }
 
   return (
