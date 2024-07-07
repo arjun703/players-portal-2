@@ -35,7 +35,7 @@ console.log(existingProfileImageLink)
     }
   };
 
-
+  const [isReloading, setIsReloading]= useState(true)
 
   const handleFileUpload = async () => {
     if(!(!media && caption.trim().length == 0)){
@@ -46,8 +46,8 @@ console.log(existingProfileImageLink)
         const result = await pOSTRequest(formData, '/api/profile-photo/')
 
         if(result.success){
-          window.location.href = location.href
-
+          setTimeout(function(){          window.location.href = location.href
+          }, 100)
           // return result.profile_photo;
           
         }else{
@@ -126,7 +126,7 @@ console.log(existingProfileImageLink)
             <Button
               variant="outlined"
               component="label"
-              sx={{display: isUploading ? 'none': ''}}
+              sx={{display: (isUploading || isReloading) ? 'none': ''}}
               startDecorator={<PhotoCameraIcon />}
               onClick={handleFileChange}
             >
@@ -138,7 +138,7 @@ console.log(existingProfileImageLink)
                 onChange={handleFileChange}
               />
             </Button>
-            <Button sx={{width: isUploading ? '100%': 'auto'}} onClick={handleFileUpload} variant="solid" loading={isUploading} >
+            <Button sx={{width: isUploading ? '100%': 'auto'}} onClick={handleFileUpload} variant="solid" loading={isUploading || isReloading } >
               Confirm
             </Button>
           </Box>
