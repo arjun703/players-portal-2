@@ -44,7 +44,7 @@ export  async function POST(request) {
 
             if(isBasicInfoInsertionSuccess){
 
-                const token = generateToken(username)
+                const token = generateToken(username, 'athlete')
                 cookies().set('token', token)
 
                 return new Response(JSON.stringify({ success: true, token: token }), {
