@@ -171,7 +171,7 @@ function HeaderCenterMenuItemsForLoggedIn(){
       </ListItemButton>
 
       <ListItemButton
-      style={{borderBottom: pathname.includes('accout') ? '2px solid red' : ''}} 
+      style={{borderBottom: pathname.includes('account') ? '2px solid red' : ''}} 
         onClick={() => { router.push('/account')}}
       >
         <ListItemIcon sx={{display: {xs: 'flex', lg: 'none'}}}><AccountBoxIcon /></ListItemIcon>

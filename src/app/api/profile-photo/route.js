@@ -1,7 +1,4 @@
 import { databaseConnection, generateRandomString, getLoggedInUsername,generateToken, executeQuery} from '@/app/api/utils'
-import basicInfo from '@/app/view-profile/[username]/_basic-info/general_info'
-import { getLoadingButtonUtilityClass } from '@mui/lab'
-import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 

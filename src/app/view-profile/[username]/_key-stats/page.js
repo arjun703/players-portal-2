@@ -3,13 +3,14 @@ import { useState, useEffect } from "react";
 import ViewKeyStats from "./view-key-stats";
 import { pOSTRequest, getRequest, uPDATErequest, dELETErequest } from '@/app/_components/file_upload';
 
-
+import LimitedAccessDiv from "@/app/_components/limited_access";
 
 export default function KeyStats({username}){
 
     const [keyStat, setKeyStat] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [editable, setEditable] = useState(false)
+    const [limitedAccess, setLimitedAccess] = useState(false)
 
     useEffect(() => {
         async function fetchKeyStats() {
@@ -18,6 +19,7 @@ export default function KeyStats({username}){
                 setIsLoading(false)
                 setKeyStat(data.keystat)
                 setEditable(data.editable)
+                setLimitedAccess(data.limitedAccess)
             } catch (error) {
                 alert(error.message)
             }
@@ -29,11 +31,17 @@ export default function KeyStats({username}){
         <> {
             isLoading ? (
                 <>
-                
+                    <Paper sx={{textAlign:'center', padding: '30px'}}>
+                        Loading
+                    </Paper>
                 </>
             ): (
                 <Stack spacing={2}>
-                    <ViewKeyStats editable={editable} keyStat={keyStat} />
+                    {
+                        limitedAccess 
+                            ? <LimitedAccessDiv accessibleAfterPremium={'Get access to key athletic stats with premium'} /> 
+                            : <ViewKeyStats editable={editable} keyStat={keyStat} />
+                    }
                 </Stack> 
             )
         }

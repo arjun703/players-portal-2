@@ -286,7 +286,8 @@ export default function Education({isEditable, educations, handleEditEducation, 
                             <>
                                 {educations.length
                                     ? <>
-                                        <NonEmptyHeader handleInitiateAddNewEducation={handleInitiateAddNewEducation} />
+
+                                        <NonEmptyHeader isEditable={isEditable} handleInitiateAddNewEducation={handleInitiateAddNewEducation} />
                                         <Educations 
                                             educations={educations} 
                                             isEditable={isEditable}
@@ -418,7 +419,7 @@ function NoEducationBlock({isEditable, handleInitiateAddNewEducation }) {
     )
 }
 
-function NonEmptyHeader({handleInitiateAddNewEducation}) {
+function NonEmptyHeader({handleInitiateAddNewEducation, isEditable}) {
     return (
         <Grid container sx={{ alignItems: 'center' }}>
             <Grid item auto>
@@ -428,16 +429,21 @@ function NonEmptyHeader({handleInitiateAddNewEducation}) {
                 <Divider sx={{margin: '0 20px'}} ></Divider>
             </Grid>
             <Grid item>
-                <Tooltip onClick={handleInitiateAddNewEducation} title="Add New Education">
-                    <IconButton
-                        sx={{
-                            ':hover': { color: 'blue' }, backgroundColor: 'blue',
-                            color: 'white', border: '1px solid blue'
-                        }}
-                    >
-                        <LibraryAddIcon />
-                    </IconButton>
-                </Tooltip>
+                {
+                    isEditable && (
+                        <Tooltip onClick={handleInitiateAddNewEducation} title="Add New Education">
+                            <IconButton
+                                sx={{
+                                    ':hover': { color: 'blue' }, backgroundColor: 'blue',
+                                    color: 'white', border: '1px solid blue'
+                                }}
+                            >
+                                <LibraryAddIcon />
+                            </IconButton>
+                        </Tooltip>
+
+                    )
+                }
             </Grid>
         </Grid>
     )

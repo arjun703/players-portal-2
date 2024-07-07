@@ -1,4 +1,6 @@
 import { databaseConnection,getLoggedInUsername, generateToken, executeQuery} from '@/app/api/utils'
+import { isPremium } from '../is_premium';
+
 
 export  async function PUT(request) {
     let connection = false
@@ -63,18 +65,26 @@ export  async function GET(request) {
     const userName = searchParams.get('username')
     let connection = false
     try {
-        // Save the title and filenames in the MySQL database
-        const query = `SELECT * from key_stats 
-            WHERE username = '${userName}'
-        `;
-
         connection = await databaseConnection()
+
+        const is_premium = await isPremium(connection)
+
+        const limitedAccess = userName != getLoggedInUsername()  && !is_premium 
+
+        let keystat = {}
+
+        if(!limitedAccess){
+
+            // Save the title and filenames in the MySQL database
+            const query = `SELECT * from key_stats 
+                WHERE username = '${userName}'
+            `;
+            
+            keystat = await executeQuery(connection, query);
         
+        }
 
-        const keystat = await executeQuery(connection, query);
-        connection.end()
-
-        return new Response(JSON.stringify({editable: userName == getLoggedInUsername(), success: true, keystat: keystat }), {
+        return new Response(JSON.stringify({limitedAccess: limitedAccess, editable: userName == getLoggedInUsername(), success: true, keystat: keystat }), {
             headers: {
                 "Content-Type": "application/json"
             },

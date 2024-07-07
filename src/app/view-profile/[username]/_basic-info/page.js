@@ -18,7 +18,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs'; // Import dayjs library
 import Button from '@mui/joy/Button';
 import { Divider } from '@mui/joy';
-
+import LimitedAccessDiv from '@/app/_components/limited_access';
 
 export default function BasicInfo({username}){
 
@@ -26,6 +26,7 @@ export default function BasicInfo({username}){
     const [isLoading, setIsLoading] = useState(true)
     const [basicInfo, setBasicInfo] = useState({})
     const [isEditable, setIsEditable] = useState(false)
+    const [limitedAccess, setLimitedAccess] = useState(false)
     const initiateEditBasicInfo = ()=>{
         setIsEditing(true)
     }
@@ -53,6 +54,8 @@ export default function BasicInfo({username}){
                 const data = await getRequest('/api/basic-info?username='+username); // Adjust the API endpoint URL as needed
                 setIsLoading(false)
                 let basic_info = data.basic_info
+                setLimitedAccess(data.limitedAccess)
+
                 if(basic_info.length){
                     let basicInfo0  = basic_info[0]
                     let basicInfo = basicInfo0.info 
@@ -87,6 +90,12 @@ export default function BasicInfo({username}){
             alert(result.msg)
             return false
         }
+    }
+
+    if(limitedAccess){
+        return(
+            <LimitedAccessDiv accessibleAfterPremium={'Get access to age, contact information, guardian information, social media links, and more with premium'} />
+        )
     }
 
     return(

@@ -37,12 +37,16 @@ import Stack from '@mui/material/Stack';
 import FloatingActionButton from '@/app/_components/floating_action_btn';
 import AddIcon from '@mui/icons-material/Add';
 
+
+import LimitedAccessDiv from '@/app/_components/limited_access';
+
 export default function Videos({username}) {
   const [videos, setVideos] = useState([]);
   const [addingNewVideo, setAddingNewVideo] = useState(false)
   const [haveDragChagesBeenMade, setHaveDragChagesBeenMade] = useState(false)
   const [isLoadingVideos, setIsLoadingVideos] = useState(false)
   const [editable, setEditable] = useState(false)
+  const [limitedAccess, setLimitedAccess] = useState(false)
     useEffect(() => {
       async function fetchVideos() {
           try {
@@ -55,6 +59,7 @@ export default function Videos({username}) {
               setIsLoadingVideos(false)
               setVideos(data.videos);
               setEditable(data.editable)
+              setLimitedAccess(data.limitedAccess)
           } catch (error) {
               alert( error.message)
           }
@@ -185,6 +190,11 @@ export default function Videos({username}) {
                     }
                   </TransitionGroup>
                 </Paper>
+                {
+                  limitedAccess && (
+                    <LimitedAccessDiv accessibleAfterPremium={'Unlock more videos with premium.'} />
+                  )
+                }
                 {
                   editable && (
                     <FloatingActionButton btnIcon={<AddIcon />} btnTitle='Add New Video' handler={handleAddNewVideo} />

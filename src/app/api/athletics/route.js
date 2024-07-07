@@ -9,14 +9,12 @@ export  async function GET(request) {
     let connection = false
     try {
 
-
         let  query = `SELECT * from press_or_interviews 
             WHERE user_id = '${userName}' AND is_active=1
             ORDER BY created_at DESC
         `;
         
         connection = await databaseConnection();
-
 
         const press_or_interviews = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {

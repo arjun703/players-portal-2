@@ -1,4 +1,3 @@
-import mysql from 'mysql2';
 import {  getLoggedInUsername,databaseConnection, generateToken, executeQuery} from '@/app/api/utils'
 
 export  async function GET(request) {

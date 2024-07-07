@@ -1,5 +1,5 @@
-import mysql from 'mysql2';
 import { databaseConnection, getLoggedInUsername, generateToken, executeQuery} from '@/app/api/utils'
+import { isPremium } from '../is_premium';
 
 export  async function GET(request) {
 
@@ -7,12 +7,18 @@ export  async function GET(request) {
     const userName = searchParams.get('username')
     let connection = false
     try {
+        
+        connection = await databaseConnection();
+
+        const is_premium = await isPremium(connection)
+
+        const limitedAccess = userName != getLoggedInUsername()  && !is_premium 
+
         // Save the title and filenames in the MySQL database
         const query = `SELECT * from videos 
             WHERE user_id = '${userName}' AND is_active=1
-            ORDER BY created_at DESC
+            ORDER BY created_at DESC ${ limitedAccess ? ' LIMIT 1 ': ''   }
         `;
-        connection = await databaseConnection();
 
         const videos = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {
@@ -24,7 +30,7 @@ export  async function GET(request) {
             });
         });
 
-        return new Response(JSON.stringify({editable: userName == getLoggedInUsername(), success: true, videos: videos }), {
+        return new Response(JSON.stringify({limitedAccess: limitedAccess, editable: userName == getLoggedInUsername(), success: true, videos: videos }), {
             headers: {
                 "Content-Type": "application/json"
             },

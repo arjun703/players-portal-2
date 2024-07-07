@@ -1,4 +1,6 @@
 import { databaseConnection, getLoggedInUsername,generateToken, executeQuery} from '@/app/api/utils'
+import { isPremium } from '../is_premium';
+import { listItemAvatarClasses } from '@mui/material';
 
 export  async function PUT(request) {
 
@@ -62,7 +64,7 @@ export  async function GET(request) {
 
     const { searchParams } = new URL(request.url)
     const userName = searchParams.get('username')
-
+    let connection  = false
     try {
 
         // Save the title and filenames in the MySQL database
@@ -70,13 +72,19 @@ export  async function GET(request) {
             WHERE username = '${userName}'
         `;
         
-        const connection = await databaseConnection()
+        connection = await databaseConnection()
 
-        const basic_info = await executeQuery(connection, query);
+        const is_premium = await isPremium(connection)
 
-        connection.end()
+        const limitedAccess = userName != getLoggedInUsername()  && !is_premium 
 
-        return new Response(JSON.stringify({ success: true,editable: getLoggedInUsername() == userName,  basic_info: basic_info }), {
+        let basic_info = {};
+
+        if(!limitedAccess){
+            basic_info = await executeQuery(connection, query);
+        }
+
+        return new Response(JSON.stringify({limitedAccess:limitedAccess, success: true,editable: getLoggedInUsername() == userName,  basic_info: basic_info }), {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -91,5 +99,9 @@ export  async function GET(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }

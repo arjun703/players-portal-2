@@ -4,12 +4,15 @@ import { useState, useEffect } from "react";
 import AcademicFiles from "./academic_files";
 import { pOSTRequest, getRequest, uPDATErequest, dELETErequest } from '@/app/_components/file_upload';
 
+import LimitedAccessDiv from "@/app/_components/limited_access";
+
 export default function Academics({username}) {
 
     const [educations, setEducations] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
     const [editable, setIsEditable] = useState(false)
-    
+    const [limitedAccess, setLimitedAccess] = useState(false)
+
     useEffect(() => {
         async function fetchAcademics() {
             try {
@@ -18,6 +21,7 @@ export default function Academics({username}) {
                 setIsEditable(data.editable)
                 setEducations(data.educations)
                 setAcademicFiles(data.academicFiles)
+                setLimitedAccess(data.limitedAccess)
             } catch (error) {
                 alert(error.message)
             }
@@ -151,13 +155,24 @@ export default function Academics({username}) {
                                 handleEditEducation={handleEditEducation}
                                 handleDeleteEducation={handleDeleteEducation}
                             />
-                            <AcademicFiles
-                                isEditable={editable}
-                                academicFiles={academicFiles}
-                                handleEditAcademicFile={handleEditAcademicFile}
-                                handleAddAcademicFile={handleAddAcademicFile}
-                                handleDeleteAcademicFile={handleDeleteAcademicFile}
-                            />
+                            {
+                                !limitedAccess ? (
+                                    <AcademicFiles
+                                        isEditable={editable}
+                                        academicFiles={academicFiles}
+                                        handleEditAcademicFile={handleEditAcademicFile}
+                                        handleAddAcademicFile={handleAddAcademicFile}
+                                        handleDeleteAcademicFile={handleDeleteAcademicFile}
+                                    />
+                                )  : (
+                                    <div style={{textAlign:'center'}}>
+                                        <LimitedAccessDiv 
+                                            accessibleAfterPremium={'Get access to grades, marksheets, academic achievements, IELTS and SAT scores, and more with premium.'} 
+                                            sx={{marginBottom: '0px'}} 
+                                        />
+                                    </div>
+                                )
+                            }
                         </Stack>
                     )
             }

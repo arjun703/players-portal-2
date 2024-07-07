@@ -46,7 +46,8 @@ console.log(existingProfileImageLink)
         const result = await pOSTRequest(formData, '/api/profile-photo/')
 
         if(result.success){
-          location.reload()
+          window.location.href = location.href
+
           // return result.profile_photo;
           
         }else{

@@ -1,4 +1,4 @@
-import {generateRandomString,databaseConnection} from '@/app/api/utils'
+import {generateRandomString,databaseConnection, getLoggedInUsername} from '@/app/api/utils'
 import fs from 'fs';
 import path from 'path';
 import mysql from 'mysql2';
@@ -38,7 +38,7 @@ export  async function POST(request) {
         const query = `INSERT INTO academic_files 
             (id, user_id, info ) 
             VALUES 
-            ('${id}', '1234', '${JSON.stringify(info)}' )
+            ('${id}', '${getLoggedInUsername()}', '${JSON.stringify(info)}' )
         `;
         const connection = await databaseConnection();
 
