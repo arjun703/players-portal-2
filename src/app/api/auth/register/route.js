@@ -37,7 +37,7 @@ export  async function POST(request) {
 
             const basicInfoInsertQuery = `
                 INSERT INTO basic_info(username, name, info, gender) 
-                VALUES ('${username}', '${name}', '{}', '', '', '')
+                VALUES ('${username}', '${name}', '{}', '')
             `
 
             const isBasicInfoInsertionSuccess = await executeQuery(connection, basicInfoInsertQuery)
