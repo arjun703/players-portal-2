@@ -15,22 +15,37 @@ import Typography from '@mui/joy/Typography';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import Link from 'next/link';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import { useState, useEffect } from 'react';
+import SimpleBackdrop from '../_components/backdrop';
 
 export default function PricingCards() {
 
-  const rows = [
-    { feature: 'Build Profile', free: true, platinum: true },
-    { feature: 'Profile picture', free: true, platinum: true },
-    { feature: 'Track Fitness Performance', free: true, platinum: true },
-    { feature: 'Track Achievements', free: true, platinum: true },
-    { feature: 'Upload Videos', free: false, platinum: true },
-    { feature: 'Direct Promotions to Coaches/Scouts/Clubs', free: false, platinum: true },
-    { feature: 'Sport Partner Network Merchant Promotions', free: false, platinum: true },
-    { feature: 'Sports Partner Network Training Campaigns Promotions', free: false, platinum: true },
-    { feature: 'Complete Profile Report', free: false, platinum: true },
-    { feature: '7 days a week support', free: false, platinum: true },
-    { feature: 'Appointed Advisor/Consultant', free: false, platinum: true },
-  ];
+  const [pricingPageSettings, setPricingPageSettings] = useState('')
+
+  const [isFetchingSettings, setIsFetchingSettings] = useState(true)
+
+  useEffect(() => {
+      async function fetchAdminSettings(){
+          try{
+              setIsFetchingSettings(true)
+              const adminSettings = await fetch('/api/admin/settings/pricing-page/')
+              const adminSettingsJson =  await adminSettings.json()
+              if(!adminSettingsJson.success){
+                  throw new Error(adminSettingsJson.msg)
+              }
+              setPricingPageSettings(adminSettingsJson.settings)
+          }catch(error){
+              toast(error.message)
+          }finally{
+              setIsFetchingSettings(false)
+          }
+      }
+      fetchAdminSettings()
+  }, [])
+
+  if(isFetchingSettings){
+    return <SimpleBackdrop />
+  }
 
   return (
     <>
@@ -52,17 +67,17 @@ export default function PricingCards() {
           <Chip size="sm" variant="outlined" color="neutral">
             free
           </Chip>
-          <Typography level="h2">FREE</Typography>
+          <Typography level="h2">{pricingPageSettings.free_text}</Typography>
           <Divider inset="none" />
           <List size="sm" sx={{ mx: 'calc(-1 * var(--ListItem-paddingX))' }}>
             {
-              rows.filter(r => r.free == true).map( (r, i) => {
+              pricingPageSettings.free_feature_list.split('\n').filter(r => r.trim().length > 0).map( (r, i) => {
                 return(
                     <ListItem key={i}>
                       <ListItemDecorator>
                         <DirectionsRunIcon />
                       </ListItemDecorator>
-                      {r.feature}
+                      {r}
                   </ListItem>
                 )
               })
@@ -95,7 +110,7 @@ export default function PricingCards() {
           <Chip size="sm" variant="outlined">
             premium
           </Chip>
-          <Typography level="h2">PLATINUM</Typography>
+          <Typography level="h2">{pricingPageSettings.premium_text}</Typography>
           <Divider inset="none" />
           <List
           size="sm"
@@ -105,20 +120,14 @@ export default function PricingCards() {
             mx: 'calc(-1 * var(--ListItem-paddingX))',
           }}
           >
-            <ListItem>
-              <ListItemDecorator>
-                <DirectionsRunIcon />
-              </ListItemDecorator>
-              All basic plan features
-            </ListItem>
             {
-              rows.filter(r => r.platinum == true).map( (r, i) => {
+              pricingPageSettings.premium_feature_list.split('\n').filter(r => r.trim().length > 0).map( (r, i) => {
                 return(
                     <ListItem key={i}>
                       <ListItemDecorator>
                         <DirectionsRunIcon />
                       </ListItemDecorator>
-                      {r.feature}
+                      {r}
                   </ListItem>
                 )
               })
@@ -127,7 +136,7 @@ export default function PricingCards() {
           <Divider inset="none" />
           <CardActions>
             <Typography level="title-lg" sx={{ mr: 'auto' }}>
-              RM 1{' '}
+              RM {pricingPageSettings.price_in_rm_per_day}{' '}
               <Typography fontSize="sm" textColor="text.tertiary">
                 / day
               </Typography>

@@ -329,7 +329,7 @@ export function SortableVideoItem({video, handleDelete, editable=false}) {
           >
             {
               video.thumbnail_src?.length > 0 
-              ? <img src={'/files/'+video.thumbnail_src} alt={video.title}  style={{borderRadius: '15px', marginRight: '15px', maxWidth: '150px', maxHeight: '150px' }} />
+              ? <img src={video.thumbnail_src} alt={video.title}  style={{borderRadius: '15px', marginRight: '15px', maxWidth: '150px', maxHeight: '150px' }} />
               : <img src={'/site-assets/default-video-thumb.png'} alt="Thumbnail"  style={{borderRadius: '15px', marginRight: '15px', maxWidth: '150px', maxHeight: '150px' }} />
             }
           </div>
@@ -395,7 +395,7 @@ function WatchVideoBody({video}){
         video.type=='custom' &&
         <div className="video-container" style={{ background:'black',justifyContent:'center', display: 'flex'}}>
             <video style={{ width: isLarger ? '60%' : '100%' , aspectRatio: '16/9'}} controls >
-                <source src={'/files/'+video.video_src}  />
+                <source src={video.video_src}  />
                 Your browser does not support the video tag.
             </video>
         </div>

@@ -16,6 +16,8 @@ import { useRouter } from "next/navigation";
 import {Select, MenuItem, InputLabel, FormControl} from  "@mui/material" 
 import sportsSettings from '@/app/view-profile/[username]/_key-stats/settings'
 
+import Link from 'next/link';
+
 export default function LandingPage(){
     
     const router = useRouter();
@@ -65,50 +67,52 @@ export default function LandingPage(){
     return (
         <div>
             <Header user={false} />
-            <div maxWidth="lg" >
-                <div  style={{ display:'flex', marginTop:'20px', justifyContent:'center',}}>
-                    <Paper style={{maxWidth:'100%', width:'700px'}}>
-                        <p style={{textAlign:'center'}}>
-                            Please fill up the following form to sign up as a coach.
-                        </p>
-                        <Grid container spacing={2} >
-                            <Grid item lg={12} xs={12}  >
-                                <Paper  sx={{ padding:'20px', borderRadius: '0px'}} >    
-                                    <div style={{fontWeight:'bold', textAlign:'center', paddingBottom:'20px'}}>Coach Information</div>
-                                    <Stack spacing={2}  >
-                                        <TextField onChange={(e)=>handleChange('name', e.target.value.trim())} label="Name" variant="outlined" fullWidth  />
-                                        <TextField onChange={(e)=>handleChange('email', e.target.value.trim())} label="Email" variant="outlined" fullWidth  />
-                                        <TextField onChange={(e)=>handleChange('identification_number', e.target.value.trim())} label="Identification Number (IC)" variant="outlined" fullWidth  />
-                                        <TextField onChange={(e)=>handleChange('residing_country', e.target.value.trim())} label="Residing Country" variant="outlined" fullWidth  />
-                                        <TextField onChange={(e)=>handleChange('zip_code', e.target.value.trim())} label="Provnce / Zip Code" variant="outlined" fullWidth  />
-                                        <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">Sport Type</InputLabel>
-                                            <Select
-                                                id="demo-simple-select"
-                                                labelId="demo-simple-select-label"
-                                                label="Sport Type"
-                                                onChange={(e) => { handleChange('sport_type', e.target.value) }}
-                                            >
-                                                {sportsSettings.sports.map(({ label, id }, i) => (<MenuItem key={i} value={id}>{label}</MenuItem>))}
-                                            </Select>
-                                        </FormControl>
-                                        <TextField  onChange={(e)=>handleChange('password', e.target.value.trim())}  type="password" label="Password" variant="outlined"  fullWidth  />
-                                        <TextField onChange={(e) => handleChange('confirm_password', e.target.value.trim())}  label="Confirm Password" variant="outlined" type="password"  fullWidth  />                                                                         
-                                    </Stack>  
-                                </Paper>
-                            </Grid>
-                            <Grid item lg={12} xs={12}>
-                                <Paper sx={{padding: '20px', borderRadius: '0px'}} > 
-                                    <div style={{textAlign:'center', paddingBottom:'20px'}}>Team Information</div>
-                                    <Stack spacing={2}>
-                                        <TextField onChange={(e)=>handleChange('team_name', e.target.value.trim())} label="Team Name" variant="outlined" fullWidth  />
-                                        <TextField onChange={(e)=>setEmail('team_reg_no', e.target.value.trim())} label="Team Reg #" variant="outlined" fullWidth  />
-                                        <TextField onChange={(e)=>setPassword('team_reg_location', e.target.value.trim())}   label="Team Reg Location" variant="outlined"  fullWidth  />
-                                    </Stack>  
-                                </Paper>
-                            </Grid>
-                        </Grid>
-
+            <Container maxWidth='lg'>
+                <Grid container spacing={2} sx={{marginTop: '30px'}} >
+                    <Grid item lg={6} xs={12} sx={{ display: 'flex', justifyContent: 'center'}} >
+                        <Box sx={{position:{ lg: 'fixed'}, top: {lg: '250px'}}}>
+                            <div>
+                                <h3>Create a coach account</h3>
+                                <hr></hr>
+                                <Link href={'/register'}>Create an athlete account</Link>
+                                <br></br>
+                                <br></br>
+                                <Link href={'/ctu-register'}>Create a club / team account</Link>
+                            </div>
+                        </Box>
+                    </Grid>
+                    <Grid item lg={6} xs={12}  >
+                        <Paper  sx={{ padding:'20px', borderRadius: '0px'}} >    
+                            <div style={{fontWeight:'bold', textAlign:'center', paddingBottom:'20px'}}>Coach Information</div>
+                            <Stack spacing={2}  >
+                                <TextField onChange={(e)=>handleChange('name', e.target.value.trim())} label="Name" variant="outlined" fullWidth  />
+                                <TextField onChange={(e)=>handleChange('email', e.target.value.trim())} label="Email" variant="outlined" fullWidth  />
+                                <TextField onChange={(e)=>handleChange('identification_number', e.target.value.trim())} label="Identification Number (IC)" variant="outlined" fullWidth  />
+                                <TextField onChange={(e)=>handleChange('residing_country', e.target.value.trim())} label="Residing Country" variant="outlined" fullWidth  />
+                                <TextField onChange={(e)=>handleChange('zip_code', e.target.value.trim())} label="Provnce / Zip Code" variant="outlined" fullWidth  />
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Sport Type</InputLabel>
+                                    <Select
+                                        id="demo-simple-select"
+                                        labelId="demo-simple-select-label"
+                                        label="Sport Type"
+                                        onChange={(e) => { handleChange('sport_type', e.target.value) }}
+                                    >
+                                        {sportsSettings.sports.map(({ label, id }, i) => (<MenuItem key={i} value={id}>{label}</MenuItem>))}
+                                    </Select>
+                                </FormControl>
+                                <TextField  onChange={(e)=>handleChange('password', e.target.value.trim())}  type="password" label="Password" variant="outlined"  fullWidth  />
+                                <TextField onChange={(e) => handleChange('confirm_password', e.target.value.trim())}  label="Confirm Password" variant="outlined" type="password"  fullWidth  />                                                                         
+                            </Stack>  
+                        </Paper>
+                        <Paper sx={{padding: '20px', borderRadius: '0px'}} > 
+                            <div style={{textAlign:'center', paddingBottom:'20px'}}>Team Information</div>
+                            <Stack spacing={2}>
+                                <TextField onChange={(e)=>handleChange('team_name', e.target.value.trim())} label="Team Name" variant="outlined" fullWidth  />
+                                <TextField onChange={(e)=>setEmail('team_reg_no', e.target.value.trim())} label="Team Reg #" variant="outlined" fullWidth  />
+                                <TextField onChange={(e)=>setPassword('team_reg_location', e.target.value.trim())}   label="Team Reg Location" variant="outlined"  fullWidth  />
+                            </Stack>  
+                        </Paper>
                         <div style={{marginTop:'20px', paddingBottom:'20px', textAlign:'center', display:'flex', justifyContent:'center'}}>
                             <Button 
                                 variant="solid"
@@ -120,9 +124,9 @@ export default function LandingPage(){
                                 {lang.sign_up_text}
                             </Button> 
                         </div>
-                    </Paper>
-                </div>
-            </div>
+                    </Grid>
+                </Grid>
+            </Container>
         </div>
     );
 }

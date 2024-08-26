@@ -25,7 +25,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-export default function HeaderLoggedIn({user}){
+export default function HeaderLoggedIn({siteSettings}){
+  console.log(siteSettings);
   const router = useRouter()
   const isAtLeastMd = useMediaQuery('(min-width:900px)');
   const isAtLeastLg = useMediaQuery('(min-width:1200px)');
@@ -46,7 +47,7 @@ export default function HeaderLoggedIn({user}){
               <Grid container sx={{alignItems: 'center'}}>
                 <Grid item xs={4} md={2}>
                     <a href="/">
-                      <img style={{maxHeight: '60px'}} src="/site-assets/logo.png" />
+                     <img style={{height: '60px', width: '60px', objectFit:'cover'}} src={siteSettings?.logo_url}/>
                     </a>
                 </Grid>
                 { isAtLeastMd && 

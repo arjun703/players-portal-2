@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.621.0",
+    "@aws-sdk/lib-storage": "^3.621.0",
     "@dnd-kit/sortable": "^8.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
@@ -34,7 +36,10 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dnd-touch-backend": "^16.0.1",
     "react-dom": "^18",
+    "react-google-autocomplete": "^2.7.3",
+    "react-hot-toast": "^2.4.1",
     "react-places-autocomplete": "^7.3.0",
+    "recharts": "^2.12.7",
     "stripe": "^16.2.0"
   },
   "devDependencies": {

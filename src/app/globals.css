@@ -94,3 +94,7 @@ html, body {
     font-weight: bold;
     border-bottom: 5px solid red;
   }
+
+  .admin-panel .MuiTab-root{
+    justify-content: flex-start;
+  }

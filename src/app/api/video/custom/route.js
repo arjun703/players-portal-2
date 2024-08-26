@@ -1,6 +1,6 @@
 import {generateRandomString,databaseConnection, getLoggedInUsername} from '@/app/api/utils'
-import fs from 'fs';
 import path from 'path';
+import { writeMediasAndAttachments } from '../../file/write';
 
 
 export  async function POST(request) {
@@ -13,14 +13,14 @@ export  async function POST(request) {
 
         const title = data.get('title')
 
-        const video = data.get('video')
-        const thumbNail = data.get('thumbnail')
+        let video = data.get('video')
+        let thumbNail = data.get('thumbnail')
         
         const id=generateRandomString(20)
-        const thumbnailFileName = generateRandomString(20) + path.extname(thumbNail.name);
-        const videoFileName = generateRandomString(20) + path.extname(video.name);
+        let thumbnailFileName = generateRandomString(20) + path.extname(thumbNail.name);
+        let videoFileName = generateRandomString(20) + path.extname(video.name);
         
-        if( !(['.jpg', '.jpeg', '.png', '.gif', '.bmp'].includes(path.extname(thumbNail.name.toLowerCase())))){
+        if( !(['.jpg', '.jpeg', '.webp', '.png', '.gif', '.bmp'].includes(path.extname(thumbNail.name.toLowerCase())))){
             throw new Error('Error - Invalid image format. Supported types are jpg, png, gif, bmp')
         }
         
@@ -31,12 +31,18 @@ export  async function POST(request) {
         if(title.trim().length == 0){
             throw new Error('Error - Empty title')
         }
-
-        const thumbnailBuffer = await thumbNail.arrayBuffer(); // Get the file data as a Buffer or ArrayBuffer
-        const videoBuffer = await video.arrayBuffer(); // Get the file data as a Buffer or ArrayBuffer
         
-        await fs.promises.writeFile(path.join(process.cwd(), 'public/files/', thumbnailFileName), Buffer.from(thumbnailBuffer));
-        await fs.promises.writeFile(path.join(process.cwd(), 'public/files/', videoFileName), Buffer.from(videoBuffer));
+        const thumbnailUploaded = await writeMediasAndAttachments(process.env.USER_GENERATED_MEDIA_FOLDER+'/'+thumbnailFileName, thumbNail)
+        if(thumbnailUploaded === false){
+            throw new Error('Error uploading thumbnail')
+        }
+        thumbnailFileName = thumbnailUploaded
+
+        const videoUploaded = await writeMediasAndAttachments(process.env.USER_GENERATED_MEDIA_FOLDER+'/'+videoFileName, video)
+        if(videoUploaded === false){
+            throw new Error('Error uploading video')
+        }
+        videoFileName = videoUploaded
 
         // Save the title and filenames in the MySQL database
         const query = `INSERT INTO videos 
@@ -44,6 +50,7 @@ export  async function POST(request) {
             VALUES 
             ('${id}', '${title}', '${thumbnailFileName}', '${videoFileName}', 'custom', '${getLoggedInUsername()}')
         `;
+
         connection = await databaseConnection();
 
         const thumbnail_src = thumbnailFileName
@@ -53,7 +60,7 @@ export  async function POST(request) {
                 throw new Error('Error inserting data into database- '+ error.message);
             } 
         });
-
+        
         return new Response(JSON.stringify({ success: true, video: {
             id: id, title: title, thumbnail_src: thumbnail_src, video_src: videoFileName, type: 'custom'
         }}), {
@@ -64,16 +71,19 @@ export  async function POST(request) {
         });
 
     } catch (error) {
-        console.log(error)
+        
         return new Response(JSON.stringify({ success: false, msg: error.message  }), {
             headers: {
                 "Content-Type": "application/json"
             },
             status: 200
         });
+
     }finally{
+
         if(connection){
             connection.end()
         }
+    
     }
 }

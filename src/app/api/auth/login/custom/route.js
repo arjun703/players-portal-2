@@ -21,7 +21,8 @@ export  async function POST(request) {
 
         if(results.length){
             const user = results[0]
-            if(comparePassword(password, user.password)){
+            const match = await comparePassword(password, user.password)
+            if(match === true){
                 const token = generateToken(user.username, user.type)
                 cookies().set('token', token)
                 return new Response(JSON.stringify({ success: true, type: user.type, token: token }), {

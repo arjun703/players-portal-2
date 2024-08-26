@@ -13,6 +13,8 @@ import { Divider } from '@mui/material';
 import GoogleSignIn from '../_components/google-sign-in';
 import { pOSTRequest, uPDATErequest, dELETErequest } from '@/app/_components/file_upload';
 import { useRouter } from "next/navigation";
+import Link from 'next/link';
+
 
 export default function LandingPage(){
     
@@ -61,14 +63,17 @@ export default function LandingPage(){
                                 <div >
                                     <div>
                                         <h3>Create an athlete Account</h3>
-                                        <p>Please fillup the necessary details.</p>
+                                        <hr></hr>
+                                        <Link href={'/coach-register'}>Create a coach account</Link>
+                                        <br></br>
+                                        <br></br>
+                                        <Link href={'/ctu-register'}>Create a club / team account</Link>
                                     </div>
                                 </div>
                             </Grid>
 
                             <Grid item lg={6} xs={12}>
                                 <Paper sx={{padding: '30px', borderRadius: '0px'}} elevation={3}>
-                                        
                                     <Stack spacing={2}>
                                         <TextField onChange={(e)=>setName(e.target.value.trim())} label="Name" variant="outlined" fullWidth  />
                                         <TextField onChange={(e)=>setEmail(e.target.value.trim())} label="Email" variant="outlined" fullWidth  />

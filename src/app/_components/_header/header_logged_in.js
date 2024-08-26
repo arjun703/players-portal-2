@@ -25,15 +25,16 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import React from 'react';
 
-function Img(){
+function Img({src}){
+
   return(
     <a href="#" style={{paddingLeft: '20px'}}>
-      <img style={{maxHeight: '60px'}} src="/site-assets/logo.png" />
+      <img style={{height: '60px', width: '60px', objectFit:'cover'}} src={src} />
     </a>
   )
 }
 
-export default function HeaderLoggedIn({username}){
+export default function HeaderLoggedIn({siteSettings}){
   const router = useRouter()
   const isAtLeastMd = useMediaQuery('(min-width:900px)');
   const isAtLeastLg = useMediaQuery('(min-width:1200px)');
@@ -42,6 +43,8 @@ export default function HeaderLoggedIn({username}){
     setIsSearchBoxOpen(!isSearchBoxOpen)
   }
   const handleSearchIconClick = ()=> {setIsSearchBoxOpen(true)}
+
+
 
   return(
     <>
@@ -53,7 +56,7 @@ export default function HeaderLoggedIn({username}){
             : 
               <Grid container sx={{alignItems: 'center'}}>
                 <Grid item xs={4} md={2}>
-                  <Img sx={{maxHeight: '60px', width: 'auto'}} />
+                  <Img src={siteSettings?.logo_url} sx={{maxHeight: '60px', width: 'auto'}} />
                 </Grid>
                 { isAtLeastMd && 
                   <Grid item xs={0} md={7} lg={4}>

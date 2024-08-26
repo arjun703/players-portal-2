@@ -73,7 +73,6 @@ export default function LandingPage(){
                             <Grid item lg={6} xs={12}>
                                 <Paper sx={{padding: '30px', borderRadius: '0PX'}}  elevation={3}>
                                     <Stack spacing={2}>
-
                                         <TextField  
                                             label="Email" 
                                             variant="outlined"

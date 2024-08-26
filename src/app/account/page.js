@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import { useState, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import LimitedAccessDiv from '../_components/limited_access';
+import { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
 
@@ -60,6 +61,9 @@ export default function Dashboard() {
                                             </Paper>
                                         )
                                 }
+                                <Paper>
+                                    <Settings />
+                                </Paper>
                             </>
                         )
                     }
@@ -69,3 +73,41 @@ export default function Dashboard() {
     );
 }
 
+
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import InboxIcon from '@mui/icons-material/Inbox';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+
+function Settings(){
+
+    const router = useRouter()
+
+    return(
+        <List>
+          <ListItem onClick={()=>{router.push('/account/change-password')}} disablePadding >
+            <ListItemButton>
+              <ListItemIcon>
+                <VpnKeyIcon />
+              </ListItemIcon>
+              <ListItemText primary="Change Password" />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding >
+            <ListItemButton>
+              <ListItemIcon>
+                <PersonRemoveIcon />
+              </ListItemIcon>
+              <ListItemText primary="Close Account" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+    )
+}

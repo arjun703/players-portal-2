@@ -1,10 +1,6 @@
 import {generateRandomString,databaseConnection, getLoggedInUsername} from '@/app/api/utils'
-import fs from 'fs';
 import path from 'path';
-import mysql from 'mysql2';
-
-
-
+import {writeMediasAndAttachments} from '@/app/api/file/write'
 
 export  async function POST(request) {
 
@@ -27,13 +23,10 @@ export  async function POST(request) {
         const id=generateRandomString(20)
         const fileName = generateRandomString(20) + path.extname(file.name);
 
+        const fileLocation = await writeMediasAndAttachments(process.env.USER_GENERATED_MEDIA_FOLDER+'/'+fileName, file)
 
-        const fileBuffer = await file.arrayBuffer(); // Get the file data as a Buffer or ArrayBuffer
+        const info={type: type, file_src: fileLocation, description: description}
         
-        await fs.promises.writeFile(path.join(process.cwd(), 'public/files/', fileName), Buffer.from(fileBuffer));
-
-        const info={type: type, file_src: fileName, description: description}
-
         // Save the title and filenames in the MySQL database
         const query = `INSERT INTO academic_files 
             (id, user_id, info ) 
@@ -86,6 +79,7 @@ export  async function PUT(request) {
             SET info = '${JSON.stringify(info)}' 
             WHERE id = '${id}'
         `;
+
         const connection = await databaseConnection();
 
         connection.query(query, (error, results) => {
@@ -120,13 +114,12 @@ export async function DELETE(request) {
     await  new Promise((resolve, reject)=> setTimeout(()=> resolve(), 1000))
 
     try {
-        const userID = '1234';
         const data = await request.formData()
         const academic_info_id = data.get('academic_info_id')
         // Save the title and filenames in the MySQL database
         const query = `UPDATE  academic_files 
             SET is_active = 0 
-            WHERE id = '${academic_info_id}' AND user_id='${userID}'
+            WHERE id = '${academic_info_id}' AND user_id='${getLoggedInUsername()}'
         `;
         const connection = await databaseConnection();
 

@@ -137,8 +137,18 @@ export default function LandingPage(){
                                         <TextField defaultValue={club?.official_reg_name || ''} onChange={(e)=>handleChange('official_reg_name', e.target.value.trim())} label="Official Reg Name" variant="outlined" fullWidth  />
                                         <TextField defaultValue={club?.club_team_uni || ''} onChange={(e)=>handleChange('club_team_uni', e.target.value.trim())} label="Club? / Team? / University?" variant="outlined" fullWidth  />
                                         <TextField defaultValue={club?.official_org_email || ''} onChange={(e)=>handleChange('official_org_email', e.target.value.trim())}   label="Official Org Email" variant="outlined"  fullWidth  />
-                                        <TextField defaultValue={club?.reg_address || ''} onChange={(e)=>handleChange('reg_address', e.target.value.trim())}   label="Registered Address" variant="outlined"  fullWidth  />
-                                        <TextField defaultValue={club?.reg_contact_number || ''} onChange={(e)=>handleChange('reg_contact_number', e.target.value.trim())}   label="Registered Contact Number" variant="outlined"  fullWidth  />
+                                        <TextField defaultValue={club?.country || ''} onChange={(e)=>handleChange('country', e.target.value.trim())}   label="Country" variant="outlined"  fullWidth  />
+                                        <TextField defaultValue={club?.state || ''} onChange={(e)=>handleChange('state', e.target.value.trim())}   label="State" variant="outlined"  fullWidth  />
+                                        <TextField defaultValue={club?.town_city || ''} onChange={(e)=>handleChange('town_city', e.target.value.trim())}   label="Town / City" variant="outlined"  fullWidth  />
+                                        <TextField defaultValue={club?.postcode_zipcode || ''} onChange={(e)=>handleChange('postcode_zipcode', e.target.value.trim())}   label="Postcode / Zipcode" variant="outlined"  fullWidth  />
+                                        <Grid container>
+                                            <Grid item xs={3}>
+                                                <TextField type='number' defaultValue={club?.country_code || ''} placeholder='+' onChange={(e)=>handleChange('country_code', e.target.value.trim())}   label="Country Code" variant="outlined"  fullWidth  />
+                                            </Grid>
+                                            <Grid item xs={9}>
+                                                <TextField type='number' defaultValue={club?.contact_number || ''} onChange={(e)=>handleChange('contact_number', e.target.value.trim())}   label="Contact Number" variant="outlined"  fullWidth  />
+                                            </Grid>
+                                        </Grid>                                    
                                     </Stack>  
                                 </Paper>
                             </Grid>

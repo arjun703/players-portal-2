@@ -1,6 +1,6 @@
 import { databaseConnection, generateRandomString, getLoggedInUsername,generateToken, executeQuery} from '@/app/api/utils'
-import fs from 'fs';
 import path from 'path';
+import {writeMediasAndAttachments} from '@/app/api/file/write'
 
 export  async function POST(request) {
 
@@ -19,21 +19,18 @@ export  async function POST(request) {
             throw new Error('Error - Invalid image format. Supported types are jpg, png, gif, bmp')
         }
         
-        const profile_photoBuffer = await profile_photo.arrayBuffer(); // Get the file data as a Buffer or ArrayBuffer
-        
-        await fs.promises.writeFile(path.join(process.cwd(), 'public/files/', profile_photoFileName), Buffer.from(profile_photoBuffer));
+        const profilePhotoLocation = await writeMediasAndAttachments(process.env.USER_GENERATED_MEDIA_FOLDER+'/'+profile_photoFileName, profile_photo)
 
         // Save the title and filenames in the MySQL database
-        const query = `UPDATE users SET profile_pic = '${profile_photoFileName}' WHERE username = '${getLoggedInUsername()}'  
+        const query = `UPDATE users SET profile_pic = '${profilePhotoLocation}' WHERE username = '${getLoggedInUsername()}'  
         `;
 
         connection = await databaseConnection();
 
         const result = await executeQuery(connection, query);
 
-
         return new Response(JSON.stringify({ success: true, profile_photo: {
-            profile_photo_src: profile_photoFileName
+            profile_photo_src: profilePhotoLocation
         }}), {
             headers: {
                 "Content-Type": "application/json"

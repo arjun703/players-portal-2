@@ -91,7 +91,7 @@ export default function Dashboard() {
                 {
                   modalOpen && (
                     <ProfilePictureModal onClose={handleProfilePicUploadModalClose} existingProfileImageLink={
-                      dashboardInfo.profile_pic != null? '/files/'+dashboardInfo.profile_pic:false
+                      dashboardInfo.profile_pic != null? dashboardInfo.profile_pic:false
                     } />
                   )
                 }
@@ -100,14 +100,14 @@ export default function Dashboard() {
                     <div style={{cursor: 'pointer', position:'relative'}}>
                       <Avatar
                         alt={dashboardInfo.name}
-                        src={dashboardInfo.profile_pic != null ? '/files/'+dashboardInfo.profile_pic : ''}
+                        src={dashboardInfo.profile_pic != null ? dashboardInfo.profile_pic : ''}
                         sx={{ width: {md:  80, xs: 80} , height:{md: 80, xs: 80}  }}
                       >
                       </Avatar>
                       <PhotoCameraIcon sx={{position: 'absolute', fontSize: '15px', color:'white', background:'black', padding: '5px', borderRadius: '50%', bottom: '10px', right: '-5px' }} />
                     </div>
                   </div>
-
+                
                   <div style={{textAlign:'center', marginTop: '-15px'}}>
                     <h1>Welcome, {dashboardInfo?.name.split(' ')[0]}</h1>
                   </div>
