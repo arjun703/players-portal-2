@@ -182,7 +182,7 @@ export default function ViewProfile({params}){
                                 <div  md="auto" style={{justifyContent:'center', display:'flex'}}>
                                     <Avatar
                                         alt="Remy Sharp"
-                                        src={user.profile_pic != null ? '/files/' + user.profile_pic: '' }
+                                        src={user.profile_pic != null ?  user.profile_pic: '' }
                                         sx={{ width: {md:  250, xs: 250} , height:{md: 250, xs: 250}  }}
                                     >
                                         {user?.name.split(' ').map(w => w[0].toUpperCase() ) }

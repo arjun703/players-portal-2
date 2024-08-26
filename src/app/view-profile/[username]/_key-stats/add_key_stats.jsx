@@ -7,7 +7,7 @@ import sportsSettings from './settings'
 
 const steps = ['Select an Sport', 'Fillup Details', 'Preview and Save'];
 import { pOSTRequest, getRequest, uPDATErequest, dELETErequest } from '@/app/_components/file_upload';
-
+import toast from "react-hot-toast";
 
 import DisplayFieldsBasedOnSport from './display_fields_based_on_sports'
 
@@ -25,10 +25,10 @@ export default function HorizontalLinearStepper({sport, info}) {
     formData.append('info', JSON.stringify(info));
     const result = await uPDATErequest(formData, '/api/key-stats/')
     if (result.success) {
-        alert("success")
+        toast("Key stats saved")
         return true
     } else {
-        alert(result.msg)
+        toast(result.msg)
         return false
     }
 

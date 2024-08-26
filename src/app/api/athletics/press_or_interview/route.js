@@ -120,6 +120,7 @@ export async function DELETE(request) {
             SET is_active = 0 
             WHERE id = '${press_or_interview_id}' AND user_id='${getLoggedInUsername()}'
         `;
+        connection = await databaseConnection();
 
         const result = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {
@@ -134,7 +135,7 @@ export async function DELETE(request) {
         connection = await databaseConnection();
 
         const successStatus  = result.affectedRows > 0
-
+        
         return new Response(JSON.stringify({ success: successStatus, press_or_interview_id: press_or_interview_id }), {
             headers: {
                 "Content-Type": "application/json"

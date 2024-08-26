@@ -64,9 +64,6 @@ export default function Admin(){
         )
         
     }
-    return(
-        <AdminPanel />
-    )
 
     return(
         <>

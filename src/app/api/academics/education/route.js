@@ -6,6 +6,8 @@ import mysql from 'mysql2';
 
 export  async function POST(request) {
 
+    let connection = false
+
     try {
 
         const data = await request.formData()
@@ -23,7 +25,7 @@ export  async function POST(request) {
             ('${id}', '${getLoggedInUsername()}',  '${eduInfo}')
         `;
         
-        const connection = await databaseConnection();
+        connection = await databaseConnection();
 
         connection.query(query, (error, results) => {
             if (error) {
@@ -48,10 +50,16 @@ export  async function POST(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }
 
 export  async function PUT(request) {
+
+    let connection = false
 
     try {
 
@@ -67,7 +75,8 @@ export  async function PUT(request) {
             WHERE id = '${id}'
             AND user_id = '${getLoggedInUsername()}'
         `;
-        
+        connection = await databaseConnection();
+
         connection.query(query, (error, results) => {
             if (error) {
                 throw new Error('Error inserting data into database- '+ error.message);
@@ -91,20 +100,29 @@ export  async function PUT(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }
 
 export async function DELETE(request) {
 
+    let connection = false
+
     try {
-        const userID = '1234';
+
         const data = await request.formData()
+        
         const education_id = data.get('education_id')
         // Save the title and filenames in the MySQL database
         const query = `UPDATE  educations 
             SET is_active = 0 
             WHERE id = '${education_id}' AND user_id='${getLoggedInUsername()}'
         `;
+        
+        connection = await databaseConnection();
 
         const result = await new Promise((resolve, reject) => {
             connection.query(query, (error, results) => {
@@ -133,5 +151,9 @@ export async function DELETE(request) {
             },
             status: 200
         });
+    }finally{
+        if(connection){
+            connection.end()
+        }
     }
 }

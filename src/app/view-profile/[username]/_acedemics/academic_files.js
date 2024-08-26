@@ -400,7 +400,7 @@ function DisplayAcademicFiles({isEditable,  academicFiles, handleEdit, handleDel
                                                             {
                                                                 label:'Download '+type, 
                                                                 icon: <DownloadIcon variant='small' />,
-                                                                handler: ()=>{downloadAcademicFile('/files/'+file_src)}
+                                                                handler: ()=>{downloadAcademicFile(file_src)}
                                                             },
     
                                                             {

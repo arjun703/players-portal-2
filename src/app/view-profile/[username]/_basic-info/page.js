@@ -19,6 +19,7 @@ import dayjs from 'dayjs'; // Import dayjs library
 import Button from '@mui/joy/Button';
 import { Divider } from '@mui/joy';
 import LimitedAccessDiv from '@/app/_components/limited_access';
+import toast from 'react-hot-toast';
 
 export default function BasicInfo({username}){
 
@@ -84,10 +85,10 @@ export default function BasicInfo({username}){
         const result = await uPDATErequest(formData, '/api/basic-info/')
         setIsLoading(false)
         if (result.success) {
-            alert("success")
+            toast("Basic info saved")
             return true
         } else {
-            alert(result.msg)
+            toast(result.msg)
             return false
         }
     }

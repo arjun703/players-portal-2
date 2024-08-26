@@ -21,6 +21,9 @@ export  async function writeFileToSpaces(Key, body) {
         const data = await upload.done();
 
         if(data.Location  !== undefined && data.Location !== null){
+            if(!(data.Location.includes('https://'))){
+                data.Location = 'https://' + data.Location
+            }
             return data.Location
         }else{
             throw new Error('Error uploading file')
