@@ -11,7 +11,7 @@ export  async function POST(request) {
     const sig = headerList.get('stripe-signature')
     let event
 
-    
+
     try {
         event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
         console.log(event.type)
@@ -39,7 +39,7 @@ export  async function POST(request) {
     } catch (err) {
         // On error, log and return the error message
         console.log(`❌ Error message: ${err.message}`)
-        return new Response(JSON.stringify({ success: false }), {
+        return new Response(JSON.stringify({ success: false, error: err.message }), {
             headers: {
                 "Content-Type": "application/json"
             },
