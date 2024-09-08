@@ -94,7 +94,7 @@ export default function SearchResults({params}) {
                           <CardHeader
                             avatar={
                               <Avatar aria-label="recipe"
-                                src={ sr.profile_pic!= null ? '/files/'+ sr.profile_pic : ''}
+                                src={ sr.profile_pic!= null ? sr.profile_pic : ''}
                               >
                                 
                               </Avatar>

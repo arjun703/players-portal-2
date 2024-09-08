@@ -173,12 +173,11 @@ export default function Training({isEditable, trainings, handleAddNew, handleEdi
                 {
                     ( !isEditingTraining.isEditing && !isAddingNewTraining ) && (
                         <>
-                            <Grid container sx={{alignItems: 'center', marginBottom: '20px'}}>
+                            <Grid container sx={{alignItems: 'center'}}>
                                 <Grid item auto>
                                     <h3 style={{margin: 0}}>Training</h3>
                                 </Grid>
                                 <Grid item xs sx={{margin: '0 20px'}}>      
-                                    <Divider></Divider>
                                 </Grid>
                                 {
                                     isEditable?(
@@ -193,6 +192,7 @@ export default function Training({isEditable, trainings, handleAddNew, handleEdi
                             <Trainings 
                                 trainings={trainings}
                                 isEditable={isEditable}
+                                sx={{marginTop: '20px'}}
                                 handleEdit={initiateEditTraining}
                                 handleDelete={initiateDeleteTraining}
                             />

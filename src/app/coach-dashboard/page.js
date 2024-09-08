@@ -89,7 +89,7 @@ export default function Dashboard() {
                 {
                   modalOpen && (
                     <ProfilePictureModal onClose={handleProfilePicUploadModalClose} existingProfileImageLink={
-                      dashboardInfo.coach.profile_pic!= null? '/files/'+dashboardInfo.coach.profile_pic:false
+                      dashboardInfo.coach.profile_pic!= null? dashboardInfo.coach.profile_pic:false
                     } />
                   )
                 }
@@ -101,7 +101,7 @@ export default function Dashboard() {
                     <div style={{cursor: 'pointer', position:'relative'}}>
                       <Avatar
                         alt={dashboardInfo.coach.name}
-                        src={'/files/'+dashboardInfo.coach.profile_pic}
+                        src={dashboardInfo.coach.profile_pic}
                         
                         sx={{ width: {md:  80, xs: 80} , height:{md: 80, xs: 80}  }}
                       >
@@ -164,7 +164,7 @@ function TrackedPlayers({trackedPlayers}){
               <CardHeader
                 avatar={
                   <Avatar aria-label="recipe"
-                    src={ tp.profile_pic!= null ? '/files/'+ tp.profile_pic : ''}
+                    src={ tp.profile_pic!= null ? tp.profile_pic : ''}
                   >
                   </Avatar>
                 }

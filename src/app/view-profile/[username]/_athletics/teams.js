@@ -326,12 +326,11 @@ export default function Team({isEditable, teams, handleAddNew, handleEdit, handl
                 {
                     ( !isEditingTeam.isEditing && !isAddingNewTeam ) && (
                         <>
-                            <Grid container sx={{alignItems: 'center', marginBottom: '20px'}}>
+                            <Grid container sx={{alignItems: 'center'}}>
                                 <Grid item auto>
                                     <h3 style={{margin: 0}}>Teams</h3>
                                 </Grid>
                                 <Grid item xs sx={{margin: '0 20px'}}>      
-                                    <Divider></Divider>
                                 </Grid>
                                 {
                                     isEditable ?(
@@ -346,6 +345,7 @@ export default function Team({isEditable, teams, handleAddNew, handleEdit, handl
                             </Grid>                             
                             <Teams 
                                 teams={teams}
+                                sx={{marginTop: '20px'}}
                                 isEditable={isEditable}
                                 handleEdit={initiateEditTeam}
                                 handleDelete={initiateDeleteTeam}

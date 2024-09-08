@@ -16,6 +16,9 @@ import { useRouter } from "next/navigation";
 import {Select, MenuItem, InputLabel, FormControl} from  "@mui/material" 
 import sportsSettings from '@/app/view-profile/[username]/_key-stats/settings'
 import Link from 'next/link';
+import toast from 'react-hot-toast';
+import validateEmail from '../_components/utils/email-validation';
+import validateName from '../_components/utils/name-validation';
 
 export default function LandingPage(){
     
@@ -35,17 +38,28 @@ export default function LandingPage(){
     const handleRegister = async () => {
 
         if( !('name' in prop && 'sport_type' in prop && 'email' in prop && 'password' in prop && 'confirm_password' in prop) ) {
-            alert("Name / email / password / sport type should be filled in")
+            toast("Name / email / password / sport type should be filled in")
             return
         }
 
         if(prop.password.trim() !== prop.confirm_password){
-            alert("Passwords do not match.")
+            toast("Passwords do not match.")
             return
         }
 
         if(prop.name.trim().length == 0 || prop.sport_type.trim().length == 0 || prop.email.trim().length == 0){
-            alert("Name / email / password/ sport type can't be blank")
+            toast("Name / email / password/ sport type can't be blank")
+            return
+        }
+
+
+        if(!validateEmail(prop.email)){
+            toast("Invalid email")
+            return
+        }
+
+        if(!validateName(prop.name)){
+            toast("Invalid name")
             return
         }
 
@@ -57,7 +71,7 @@ export default function LandingPage(){
             localStorage.setItem('token', result.token);
             router.push('/club-dashboard')
         } else {
-            alert(result.msg)
+            toast(result.msg)
             setIsLoading(false)
             return false
         }

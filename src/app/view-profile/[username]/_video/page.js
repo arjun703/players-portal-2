@@ -37,7 +37,7 @@ import Stack from '@mui/material/Stack';
 import FloatingActionButton from '@/app/_components/floating_action_btn';
 import AddIcon from '@mui/icons-material/Add';
 
-
+import toast from 'react-hot-toast';
 import LimitedAccessDiv from '@/app/_components/limited_access';
 
 export default function Videos({username}) {
@@ -63,7 +63,7 @@ export default function Videos({username}) {
               setLimitedAccess(data.limitedAccess)
               setIsPremium(data.is_premium)
           } catch (error) {
-              alert( error.message)
+              toast( error.message)
           }
       }
       fetchVideos();
@@ -118,7 +118,7 @@ export default function Videos({username}) {
         ]);
       }, 100)
     }else{
-      alert(result.msg)
+      toast(result.msg)
     }
   }
   
@@ -139,7 +139,7 @@ export default function Videos({username}) {
       }, 100)
 
     }else{
-      alert(result.msg)
+      toast(result.msg)
     }
   }
 
@@ -154,6 +154,12 @@ export default function Videos({username}) {
     if(response.success && response.video_id === id){
       setVideos(prevVideos => prevVideos.filter(pv => pv.id !== id ))
     }
+  }
+
+  if(isLoadingVideos){
+    return(
+      <LoadingSkeleton />
+    )
   }
 
   return (
@@ -220,32 +226,9 @@ export default function Videos({username}) {
 
 }
 
-function DisplayNoVideos({isLoadingVideos, openAddNewVideoForm, editable =false}){
+function LoadingSkeleton(){
   return(
-    <Paper sx={{ p: {xs: '10px 5px', md: 3}, marginTop: '20px', paddingBottom: '30px'}}>
-      {!isLoadingVideos &&
-        <div style={{display: 'flex', textAlign: 'center', justifyContent: 'center'}}>
-            <div>
-                <div>
-                    <VideoLibrary sx={{fontSize: '100px'}}/>
-                </div>
-                <div>
-                    No any video has been added
-                </div>
-                {
-                  editable ? (
-                    <Button variant="plain" onClick={openAddNewVideoForm}>
-                      ADD NEW
-                    </Button>
-                  ): (
-                    <></>
-                  )
-                }
-
-            </div>
-        </div>
-      }
-      {isLoadingVideos && 
+    
         <Stack spacing={1}>
 
           <Grid container sx={{alignItems: 'center'}} spacing={2}>
@@ -279,7 +262,35 @@ function DisplayNoVideos({isLoadingVideos, openAddNewVideoForm, editable =false}
           </Grid>
 
         </Stack>
-    }
+    
+  )
+}
+
+function DisplayNoVideos({isLoadingVideos, openAddNewVideoForm, editable =false}){
+  return(
+    <Paper sx={{ p: {xs: '10px 5px', md: 3}, marginTop: '20px', paddingBottom: '30px'}}>
+      {!isLoadingVideos &&
+        <div style={{display: 'flex', textAlign: 'center', justifyContent: 'center'}}>
+            <div>
+                <div>
+                    <VideoLibrary sx={{fontSize: '100px'}}/>
+                </div>
+                <div>
+                    No any video has been added
+                </div>
+                {
+                  editable ? (
+                    <Button variant="plain" onClick={openAddNewVideoForm}>
+                      ADD NEW
+                    </Button>
+                  ): (
+                    <></>
+                  )
+                }
+
+            </div>
+        </div>
+      }
     </Paper>
   )
 }

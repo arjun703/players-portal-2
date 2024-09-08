@@ -29,7 +29,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { setuid } from 'process';
 import Button from '@mui/joy/Button';
 import basicInfo from './_basic-info/general_info';
-
+import { copyToClipboard } from '@/app/_components/utils';
 
 
 
@@ -249,14 +249,8 @@ export default function ViewProfile({params}){
                                                         {
                                                             label:'Copy Link to Profile' , 
                                                             icon: <ContentCopyIcon variant='small' />,
-                                                            handler: ()=>{alert('copied')}
-                                                        },
-
-                                                        {
-                                                            label:'Report Profile' , 
-                                                            icon: <Flag variant='small' />,
-                                                            handler: ()=>{alert('Reported!')}
-                                                        },
+                                                            handler: ()=>{copyToClipboard(window.location.href)}
+                                                        }
 
                                                     ]
                                                 } 

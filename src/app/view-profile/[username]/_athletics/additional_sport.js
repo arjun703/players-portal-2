@@ -205,7 +205,7 @@ export default function AdditionalSport({isEditable, additionalSports, handleAdd
                 {
                     ( !isEditingAdditionalSport.isEditing && !isAddingNewAdditionalSport ) && (
                         <>
-                            <Grid container sx={{alignItems: 'center', marginBottom: '10px'}}>
+                            <Grid container sx={{alignItems: 'center'}}>
                                 <Grid item auto>
                                     <h3 style={{margin: 0}}>Additional Sports</h3>
                                 </Grid>
@@ -223,6 +223,7 @@ export default function AdditionalSport({isEditable, additionalSports, handleAdd
 
                             </Grid>                             
                             <AdditionalSports 
+                                sx={{marginTop: '20px'}}
                                 isEditable={isEditable}
                                 additionalSports={additionalSports}
                                 handleEdit={initiateEditAdditionalSport}

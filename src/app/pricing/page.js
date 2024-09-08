@@ -88,13 +88,13 @@ export default function PricingCards() {
             <Typography level="title-lg" sx={{ mr: 'auto' }}>
               Free
             </Typography>
-            <Link href='/register-options'>
+            <Link href='/'>
             <Button
               variant="soft"
               color="neutral"
               endDecorator={<KeyboardArrowRight />}
             >
-              Sign Up
+              continue
             </Button>
             </Link>
 

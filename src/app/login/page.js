@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { pOSTRequest, uPDATErequest, dELETErequest } from '@/app/_components/file_upload';
 import { setMaxListeners } from 'events';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import validateEmail from '../_components/utils/email-validation';
 
 export default function LandingPage(){
 
@@ -25,9 +27,15 @@ export default function LandingPage(){
     const [isLoading, setIsLoading] = useState(false)
     const handleLogin = async () => {
         if(email.length === 0 || password.length === 0) {
-            console.log("empty email or password")
+            toast("Empty email or password")
             return
         }
+
+        if(!validateEmail(email.trim())){
+            toast("Invalid email")
+            return
+        }
+
         const formData = new FormData();
         setIsLoading(true)
         formData.append('email', email);
@@ -43,7 +51,7 @@ export default function LandingPage(){
                 router.push('/dashboard') 
             }
         } else {
-            alert(result.msg)
+            toast(result.msg)
             setIsLoading(false)
             return false
         }

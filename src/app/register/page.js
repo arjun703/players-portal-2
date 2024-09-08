@@ -14,7 +14,9 @@ import GoogleSignIn from '../_components/google-sign-in';
 import { pOSTRequest, uPDATErequest, dELETErequest } from '@/app/_components/file_upload';
 import { useRouter } from "next/navigation";
 import Link from 'next/link';
-
+import toast from 'react-hot-toast';
+import validateEmail from '../_components/utils/email-validation';
+import validateName from '../_components/utils/name-validation';
 
 export default function LandingPage(){
     
@@ -27,10 +29,21 @@ export default function LandingPage(){
     const [isLoading, setIsLoading] = useState(false)
 
     const handleRegister = async () => {
-        if(email.length === 0 || password.length === 0 || name.length === 0 || password !== confirm_password) {
-            console.log("Some fields are wrong")
+        if(email.length === 0  || password.length === 0 || name.length === 0 || password !== confirm_password) {
+            toast("Some fields are wrong")
             return
         }
+
+        if(!validateEmail(email)){
+            toast("Invalid email")
+            return
+        }
+
+        if(!validateName(name)){
+            toast("Invalid name")
+            return
+        }
+
         const formData = new FormData();
         setIsLoading(true)
         formData.append('name', name);
@@ -41,7 +54,7 @@ export default function LandingPage(){
             localStorage.setItem('token', result.token);
             router.push('/dashboard')
         } else {
-            alert(result.msg)
+            toast(result.msg)
             setIsLoading(false)
             return false
         }

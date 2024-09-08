@@ -11,7 +11,7 @@ import Button from '@mui/joy/Button';
 import { pOSTRequest } from '@/app/_components/file_upload';
 import { toast } from 'react-hot-toast';
 
-
+import {Alert} from '@mui/material';
 export default function Dashboard() {
 
     const [currentPassword, setCurrentPassword] = useState('')
@@ -31,7 +31,7 @@ export default function Dashboard() {
                 const response = await pOSTRequest(formData, '/api/account/change-password')
                 toast(response.msg)
             }catch(error){
-                alert(error)
+                toast(error)
             }finally{
                 setLoading(false)
             }
@@ -45,8 +45,8 @@ export default function Dashboard() {
             <Header  user={true} />
             <Container sx={{marginTop: '30px'}} maxWidth="sm">
                 <Paper sx={{padding: '20px'}}>
-                    <p style={{textAlign:'center'}}>Please fillup following form to change password.</p>
                     <Stack spacing={2}>
+                        <Alert severity='info'>Please fillup following form to change password.</Alert>
                         <TextField onChange={(e)=>setCurrentPassword(e.target.value.trim())}  type="password" label="Current Password" variant="outlined"  fullWidth  />
                         <TextField onChange={(e) => setNewPassword(e.target.value.trim())}  label="New Password" variant="outlined" type="password"  fullWidth  />                                        
                         <TextField onChange={(e) => setConfirmNewPassword(e.target.value.trim())}  label="Confirm New Password" variant="outlined" type="password"  fullWidth  />                                        

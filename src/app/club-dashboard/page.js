@@ -86,7 +86,7 @@ export default function Dashboard() {
                 {
                   modalOpen && (
                     <ProfilePictureModal onClose={handleProfilePicUploadModalClose} existingProfileImageLink={
-                      dashboardInfo.club.profile_pic != null? '/files/'+dashboardInfo.club.profile_pic:false
+                      dashboardInfo.club.profile_pic != null? dashboardInfo.club.profile_pic:false
                     } />
                   )
                 }
@@ -96,7 +96,7 @@ export default function Dashboard() {
                     <div style={{cursor: 'pointer', position:'relative'}}>
                       <Avatar
                         alt={dashboardInfo.club.name}
-                        src={'/files/'+dashboardInfo.club.profile_pic}
+                        src={dashboardInfo.club.profile_pic}
                         
                         sx={{ width: {md:  80, xs: 80} , height:{md: 80, xs: 80}  }}
                       >
@@ -159,7 +159,7 @@ function PlayersInClub({playersInClub}){
               <CardHeader
                 avatar={
                   <Avatar aria-label="recipe"
-                                        src={ tp.profile_pic!= null ? '/files/'+ tp.profile_pic : ''}>
+                                        src={ tp.profile_pic!= null ?  tp.profile_pic : ''}>
 
                   </Avatar>
                 }

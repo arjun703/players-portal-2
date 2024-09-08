@@ -83,7 +83,7 @@ export default function Dashboard() {
         <Paper sx={{paddingTop: {md: '50px', xs: '30px'}, paddingBottom: '20px' }}>
           {
             loading ? (
-                <div style={{textAlign:'center'}}>
+                <div style={{textAlign:'center', paddingBottom: '30px'}}>
                   Loading
                 </div>
             ): (

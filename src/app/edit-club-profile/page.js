@@ -15,6 +15,9 @@ import { pOSTRequest, uPDATErequest, dELETErequest } from '@/app/_components/fil
 import { useRouter } from "next/navigation";
 import {Select, MenuItem, InputLabel, FormControl} from  "@mui/material" 
 import sportsSettings from '@/app/view-profile/[username]/_key-stats/settings'
+import toast from 'react-hot-toast';
+import validateEmail from '../_components/utils/email-validation';
+import validateName from '../_components/utils/name-validation';
 
 export default function LandingPage(){
     
@@ -35,12 +38,22 @@ export default function LandingPage(){
     const handleEdit = async () => {
 
         if( !('name' in prop && 'sport_type' in prop && 'email' in prop ) ) {
-            alert("Name / email / sport type should be filled in")
+            toast("Name / email / sport type should be filled in")
             return
         }
 
         if(prop.name.trim().length == 0 || prop.sport_type.trim().length == 0 || prop.email.trim().length == 0){
-            alert("Name / email / sport type can't be blank")
+            toast("Name / email / sport type can't be blank")
+            return
+        }
+
+        if(!validateEmail(prop.email)){
+            toast("Invalid email")
+            return
+        }
+
+        if(!validateName(prop.name)){
+            toast("Invalid name")
             return
         }
 
@@ -50,9 +63,9 @@ export default function LandingPage(){
         const result = await pOSTRequest(formData, '/api/club-edit-page')
         if (result.success === true) {
             setIsLoading(false)
-            alert("Edit Successful")
+            toast("Edit Successful")
         } else {
-            alert(result.msg)
+            toast(result.msg)
             setIsLoading(false)
             return false
         }
@@ -76,7 +89,7 @@ export default function LandingPage(){
                 setProp(info)
                 console.log(info)
             } catch (error) {
-                alert( error.message)
+                toast( error.message)
             }finally{
               setIsLoading(false)
             }

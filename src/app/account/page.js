@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import LimitedAccessDiv from '../_components/limited_access';
 import { useRouter } from 'next/navigation';
+import { Alert } from '@mui/material';
 
 export default function Dashboard() {
 
@@ -39,7 +40,7 @@ export default function Dashboard() {
                     {
                         isLoading ? (
                             <Paper sx={{paddingTop: {md: '50px', xs: '30px'}, paddingBottom: '20px' }}>
-                                <div style={{textAlign:'center'}}>
+                                <div style={{textAlign:'center', paddingBottom: '20px'}}>
                                     Loading
                                 </div>
                             </Paper>
@@ -56,12 +57,12 @@ export default function Dashboard() {
                                             </>
                                         )
                                         : (
-                                            <Paper sx={{display:'flex', justifyContent:'center', padding: '20px'}}>
+                                            <Paper sx={{display:'flex', marginTop:'20px', justifyContent:'center', padding: '20px'}}>
                                                 <Chip label="Premium Plan" color="success" />
                                             </Paper>
                                         )
                                 }
-                                <Paper>
+                                <Paper sx={{marginTop: '20px'}}>
                                     <Settings />
                                 </Paper>
                             </>

@@ -170,12 +170,11 @@ export default function PressOrInterview({isEditable, pressesOrInterviews, handl
                 {
                     ( !editingPressOrInterview.isEditing && !addingNewPressOrInterview ) && (
                         <>
-                            <Grid container sx={{alignItems: 'center', marginBottom: '20px'}}>
+                            <Grid container sx={{alignItems: 'center'}}>
                                 <Grid item auto>
                                     <h3 style={{margin: 0}}>Presses / Interviews</h3>
                                 </Grid>
                                 <Grid item xs sx={{margin: '0 20px'}}>      
-                                    <Divider></Divider>
                                 </Grid>
                                 {
                                     isEditable ? (
@@ -190,6 +189,7 @@ export default function PressOrInterview({isEditable, pressesOrInterviews, handl
                             </Grid>                             
                             <PressesOrInterviews
                                 isEditable={isEditable} 
+                                sx={{marginTop: '20px'}}
                                 pressesOrInterviews={pressesOrInterviews}
                                 handleEdit={handleInitiateEditPressOrInterview}
                                 handleDelete={handleInitiateDeletePressOrInterview}
