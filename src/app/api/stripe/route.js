@@ -22,7 +22,7 @@ export  async function POST(request) {
                 const email = paymentMethod.billing_details.email
                 // log this in database
                 connection = await databaseConnection()
-                let query = `INSERT INTO subscriptions (email, amount) VALUES('${email}', '123') `;
+                let query = `INSERT INTO subscriptions (email) VALUES('${email}') `;
                 await executeQuery(connection, query)
                 console.log(event)
             break;

@@ -87,32 +87,7 @@ function HeaderCenterMenuItemsForLoggedIn(){
   const pathname = usePathname()
 
   return(
-    <>
-
-
-
-          <ListItemButton 
-                  className={pathname == '/about-us' ? 'active-nav' :''}
-
-            onClick={()=> router.push('/about-us')}
-            sx={{textAlign:'center'}}
-          >
-            <ListItemText primary={'About Us'} />
-          </ListItemButton>
-      
-          <ListItemButton
-              className={pathname == '/contact-us' ? 'active-nav' :''}
-
-      >
-
-        <ListItemText
-                    onClick={()=> router.push('/contact-us')}
-
-      sx={{textAlign:'center'}}
-          primary={'Contact Us'} 
-        />
-      </ListItemButton>
-      
+    <>      
       <ListItemButton
         className={pathname == '/pricing' ? 'active-nav' :''}
       >
