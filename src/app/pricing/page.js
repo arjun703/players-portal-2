@@ -136,12 +136,9 @@ export default function PricingCards() {
           <Divider inset="none" />
           <CardActions>
             <Typography level="title-lg" sx={{ mr: 'auto' }}>
-              RM {pricingPageSettings.price_in_rm_per_day}{' '}
-              <Typography fontSize="sm" textColor="text.tertiary">
-                / day
-              </Typography>
+              {pricingPageSettings.pricing_text}
             </Typography>
-            <Button onClick={()=>{window.location.href='https://buy.stripe.com/test_7sI5mG7PagCaaHu144'}} endDecorator={<KeyboardArrowRight />}>Checkout</Button>
+            <Button onClick={()=>{window.location.href=pricingPageSettings.checkout_page_link}} endDecorator={<KeyboardArrowRight />}>Checkout</Button>
           </CardActions>
         </Card>
       </Box>

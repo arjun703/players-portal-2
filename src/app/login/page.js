@@ -93,7 +93,11 @@ export default function LandingPage(){
                                             loading={isLoading}
                                         >
                                             Log In
-                                        </Button> 
+                                        </Button>
+                                        <Divider></Divider>
+                                        <div style={{textAlign:'center'}}>
+                                            <Link href={'/reset-password'}>Forgot Password?</Link>
+                                        </div>
                                     </Stack>  
                                 </Paper>
                             </Grid>

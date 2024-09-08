@@ -9,7 +9,7 @@ import XIcon from '@mui/icons-material/X';
 import Link from '@mui/material/Link';
 
 export default function SocialLinks({basicInfo}){
-
+    
     const socialLinks = [
         { icon: <YouTubeIcon sx={{color: 'red'}} />, link: basicInfo?.youtube || ''},
         { icon: <InstagramIcon sx={{ color: 'rgb(134, 70, 159)' }} />, link:  basicInfo?.instagram || '' },

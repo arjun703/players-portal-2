@@ -66,6 +66,10 @@ export default function Admin(){
     }
 
     return(
+        <AdminPanel />
+    )
+
+    return(
         <>
             {
                 isLoggedInAsAdmin ? <AdminPanel /> : <LoginFormForAdmin onLoggedIn={onLoggedIn} />

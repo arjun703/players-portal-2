@@ -26,10 +26,6 @@ export  async function POST(request) {
             let match = await comparePassword(currentPassword, user.password)
             console.log(match)
             if(match === true){
-                console.log("fuck1")
-                console.log(match)
-                console.log("")
-                console.log("fuck2")
                 match = await comparePassword(newPassword, user.password)
                 console.log(match)
                 if(match === true){

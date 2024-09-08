@@ -205,12 +205,12 @@ export default function AdditionalSport({isEditable, additionalSports, handleAdd
                 {
                     ( !isEditingAdditionalSport.isEditing && !isAddingNewAdditionalSport ) && (
                         <>
-                            <Grid container sx={{alignItems: 'center', marginBottom: '20px'}}>
+                            <Grid container sx={{alignItems: 'center', marginBottom: '10px'}}>
                                 <Grid item auto>
                                     <h3 style={{margin: 0}}>Additional Sports</h3>
                                 </Grid>
                                 <Grid item xs sx={{margin: '0 20px'}}>      
-                                    <Divider></Divider>
+                                
                                 </Grid>
                                 {isEditable ? (
                                     <Grid item auto>

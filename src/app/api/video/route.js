@@ -30,7 +30,7 @@ export  async function GET(request) {
             });
         });
 
-        return new Response(JSON.stringify({limitedAccess: limitedAccess, editable: userName == getLoggedInUsername(), success: true, videos: videos }), {
+        return new Response(JSON.stringify({is_premium: is_premium, limitedAccess: limitedAccess, editable: userName == getLoggedInUsername(), success: true, videos: videos }), {
             headers: {
                 "Content-Type": "application/json"
             },

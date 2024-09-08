@@ -47,6 +47,7 @@ export default function Videos({username}) {
   const [isLoadingVideos, setIsLoadingVideos] = useState(false)
   const [editable, setEditable] = useState(false)
   const [limitedAccess, setLimitedAccess] = useState(false)
+  const [isPremium, setIsPremium] = useState(false)
     useEffect(() => {
       async function fetchVideos() {
           try {
@@ -60,6 +61,7 @@ export default function Videos({username}) {
               setVideos(data.videos);
               setEditable(data.editable)
               setLimitedAccess(data.limitedAccess)
+              setIsPremium(data.is_premium)
           } catch (error) {
               alert( error.message)
           }
@@ -172,6 +174,10 @@ export default function Videos({username}) {
         )
     }
 
+
+
+
+
       { videos.length && !addingNewVideo
           ? (
               <SortableContext 
@@ -190,22 +196,24 @@ export default function Videos({username}) {
                     }
                   </TransitionGroup>
                 </Paper>
-                {
-                  limitedAccess && (
-                    <LimitedAccessDiv accessibleAfterPremium={'Unlock more videos with premium.'} />
-                  )
-                }
-                {
-                  editable && (
-                    <FloatingActionButton btnIcon={<AddIcon />} btnTitle='Add New Video' handler={handleAddNewVideo} />
-                  )
-                }
               </SortableContext>
           )
-          : ( !addingNewVideo &&
+          : ( !addingNewVideo && isPremium &&
             <DisplayNoVideos editable={editable} isLoadingVideos={isLoadingVideos}  openAddNewVideoForm={handleAddNewVideo}/>
           )
         }
+
+        {
+          (limitedAccess || !isPremium) && (
+            <LimitedAccessDiv accessibleAfterPremium={'Upload your own videos and view content from other players with a premium subscription'} />
+          )
+        }
+        {
+          editable && isPremium && (
+            <FloatingActionButton btnIcon={<AddIcon />} btnTitle='Add New Video' handler={handleAddNewVideo} />
+          )
+        }
+        
     </DndContext>
   );
   

@@ -16,7 +16,8 @@ export default function PricingPageSettings(){
             premium_text: "",
             free_feature_list: "",
             premium_feature_list: "",
-            price_in_rm_per_day: 1
+            checkout_page_link:'',
+            pricing_text: 1
         }
     )
 
@@ -48,17 +49,14 @@ export default function PricingPageSettings(){
             if( [
                     pricingPageSettings.free_text, 
                     pricingPageSettings.premium_text, 
+                    pricingPageSettings.pricing_text,
                     pricingPageSettings.free_feature_list, 
-                    pricingPageSettings.premium_feature_list, 
+                    pricingPageSettings.checkout_page_link,
+                    pricingPageSettings.premium_feature_list 
                 ]
                 .some(value => value.trim().length === 0)
             ){
                 toast("Values can't be empty")
-                return
-            }
-            
-            if(pricingPageSettings.price_in_rm_per_day == '' || pricingPageSettings.price_in_rm_per_day == 0  ){
-                toast("Price should be greater than 0")
                 return
             }
 
@@ -125,12 +123,22 @@ export default function PricingPageSettings(){
                     </Grid>
                     
                     <Grid item xs={4}>
-                        Price ( in RM/day)
+                        Pricing Text
                     </Grid>
                     <Grid item xs={8}>
                         <TextField 
-                        onChange = {(e) => handleStateChange('price_in_rm_per_day', e.target.value)}
-                        type="number" fullWidth defaultValue={pricingPageSettings?.price_in_rm_per_day} />
+                        onChange = {(e) => handleStateChange('pricing_text', e.target.value)}
+                         fullWidth defaultValue={pricingPageSettings?.pricing_text} />
+                    </Grid>
+
+                    
+                    <Grid item xs={4}>
+                        Checkout Page Link
+                    </Grid>
+                    <Grid item xs={8}>
+                        <TextField 
+                        onChange = {(e) => handleStateChange('checkout_page_link', e.target.value)}
+                         fullWidth defaultValue={pricingPageSettings?.checkout_page_link} />
                     </Grid>
 
                     <Grid item xs={4}>
