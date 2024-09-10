@@ -1,9 +1,6 @@
 'use client'
 import Paper from '@mui/material/Paper';
-import Container from '@mui/material/Container';
 import { useState, useEffect } from 'react';
-import Chip from '@mui/material/Chip';
-import { useRouter } from 'next/navigation';
 import Divider from '@mui/material/Divider';
 import { TextField, Stack } from '@mui/material';
 import Button from '@mui/joy/Button';
@@ -20,17 +17,17 @@ export default function ChangeAdminPassword() {
     
     const handleChangePasswordBtnClick = async () => {
         
-        const formData = new FormData();
         if(currentPassword.trim().length > 0 && newPassword.trim().length > 0 && (newPassword.trim() === confirmNewPassword.trim())){
             const formData = new FormData()
             formData.append('current_password', currentPassword)
             formData.append('new_password', newPassword)
             try{
                 setLoading(true)
-                const response = await pOSTRequest(formData, '/api/account/change-password')
+                const response = await pOSTRequest(formData, '/api/admin/auth/change-password/')
                 toast(response.msg)
+                location.reload()
             }catch(error){
-                alert(error)
+                toast(error)
             }finally{
                 setLoading(false)
             }
