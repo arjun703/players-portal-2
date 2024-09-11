@@ -69,6 +69,9 @@ export  async function POST(request) {
         }
 
     } catch (error) {
+        if(error.message.includes('Duplicate entry')){
+            error.message = 'Error - email already exists'
+        }
         return new Response(JSON.stringify({ success: false, msg: error.message  }), {
             headers: {
                 "Content-Type": "application/json"
