@@ -18,14 +18,27 @@ export  async function POST(request) {
         // Handle the event
         switch (event.type) {
             case 'payment_intent.succeeded':
+                const paymentIntent = event.data.object;
                 const paymentMethodID = event.data.object.payment_method
                 const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodID);
                 const email = paymentMethod.billing_details.email
-                // log this in database
-                connection = await databaseConnection()
-                let query = `INSERT INTO subscriptions (email) VALUES('${email}') `;
-                await executeQuery(connection, query)
-                console.log(event)
+                console.log("payment intent", paymentIntent);
+                // If the payment intent has an invoice, retrieve the invoice
+                if (paymentIntent.invoice) {
+                    const invoice = await stripe.invoices.retrieve(paymentIntent.invoice);
+
+                    // Get the subscription ID from the invoice
+                    const subscriptionID = invoice.subscription;
+
+                    // Log this in the database
+                    const connection = await databaseConnection();
+                    let query = `INSERT INTO subscriptions (email, id) VALUES('${email}', '${subscriptionID}') `;
+                    await executeQuery(connection, query);
+
+                    console.log(`Subscription ID: ${subscriptionID}`);
+                }else {
+                    throw new Error("Invoice not found")
+                }
             break;
         } 
 
